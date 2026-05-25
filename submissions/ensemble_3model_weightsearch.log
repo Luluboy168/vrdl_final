@@ -1,0 +1,118 @@
+Loading GT for local validation...
+GT shape: (40, 32, 256, 256, 3)
+Loading CSVs (this may take ~1 min)...
+  NAFTta:  1280 rows
+  CGNet:   1280 rows
+  RFT-TTA: 1280 rows
+  IDs aligned ✓
+Decoding blocks (3x ~335MB CSVs)... this takes ~60-90s
+  NAFTta decoded: (1280, 196608)
+  CGNet decoded
+  RFT decoded
+
+=== Per-model Local PSNR ===
+  NAFTta: mean=18.7553 dB
+  CGNet: mean=18.6859 dB
+  RFT: mean=18.7077 dB
+
+=== 3-Model Weight Search ===
+  w=(0.60,0.05,0.35) -> local PSNR=18.7437
+  w=(0.60,0.08,0.32) -> local PSNR=18.7433
+  w=(0.60,0.10,0.30) -> local PSNR=18.7418
+  w=(0.60,0.12,0.28) -> local PSNR=18.7405
+  w=(0.60,0.15,0.25) -> local PSNR=18.7404
+  w=(0.60,0.18,0.22) -> local PSNR=18.7400
+  w=(0.60,0.20,0.20) -> local PSNR=18.7399
+  w=(0.60,0.22,0.18) -> local PSNR=18.7398
+  w=(0.60,0.25,0.15) -> local PSNR=18.7388
+  w=(0.62,0.05,0.33) -> local PSNR=18.7445
+  w=(0.62,0.08,0.30) -> local PSNR=18.7437
+  w=(0.62,0.10,0.28) -> local PSNR=18.7436
+  w=(0.62,0.12,0.26) -> local PSNR=18.7423
+  w=(0.62,0.15,0.23) -> local PSNR=18.7408
+  w=(0.62,0.18,0.20) -> local PSNR=18.7402
+  w=(0.62,0.20,0.18) -> local PSNR=18.7401
+  w=(0.62,0.22,0.16) -> local PSNR=18.7400
+  w=(0.62,0.25,0.13) -> local PSNR=18.7391
+  w=(0.64,0.05,0.31) -> local PSNR=18.7449
+  w=(0.64,0.08,0.28) -> local PSNR=18.7440
+  w=(0.64,0.10,0.26) -> local PSNR=18.7439
+  w=(0.64,0.12,0.24) -> local PSNR=18.7442
+  w=(0.64,0.15,0.21) -> local PSNR=18.7412
+  w=(0.64,0.18,0.18) -> local PSNR=18.7407
+  w=(0.64,0.20,0.16) -> local PSNR=18.7406
+  w=(0.64,0.22,0.14) -> local PSNR=18.7411
+  w=(0.64,0.25,0.11) -> local PSNR=18.7411
+  w=(0.66,0.05,0.29) -> local PSNR=18.7454
+  w=(0.66,0.08,0.26) -> local PSNR=18.7447
+  w=(0.66,0.10,0.24) -> local PSNR=18.7446
+  w=(0.66,0.12,0.22) -> local PSNR=18.7445
+  w=(0.66,0.15,0.19) -> local PSNR=18.7441
+  w=(0.66,0.18,0.16) -> local PSNR=18.7416
+  w=(0.66,0.20,0.14) -> local PSNR=18.7423
+  w=(0.66,0.22,0.12) -> local PSNR=18.7421
+  w=(0.66,0.25,0.09) -> local PSNR=18.7411
+  w=(0.68,0.05,0.27) -> local PSNR=18.7456
+  w=(0.68,0.08,0.24) -> local PSNR=18.7456
+  w=(0.68,0.10,0.22) -> local PSNR=18.7448
+  w=(0.68,0.12,0.20) -> local PSNR=18.7447
+  w=(0.68,0.15,0.17) -> local PSNR=18.7459
+  w=(0.68,0.18,0.14) -> local PSNR=18.7439
+  w=(0.68,0.20,0.12) -> local PSNR=18.7426
+  w=(0.68,0.22,0.10) -> local PSNR=18.7423
+  w=(0.68,0.25,0.07) -> local PSNR=18.7418
+  w=(0.70,0.05,0.25) -> local PSNR=18.7461
+  w=(0.70,0.08,0.22) -> local PSNR=18.7458
+  w=(0.70,0.10,0.20) -> local PSNR=18.7462
+  w=(0.70,0.12,0.18) -> local PSNR=18.7463
+  w=(0.70,0.15,0.15) -> local PSNR=18.7462
+  w=(0.70,0.18,0.12) -> local PSNR=18.7456
+  w=(0.70,0.20,0.10) -> local PSNR=18.7444
+  w=(0.70,0.22,0.08) -> local PSNR=18.7428
+  w=(0.70,0.25,0.05) -> local PSNR=18.7422
+  w=(0.72,0.05,0.23) -> local PSNR=18.7464
+  w=(0.72,0.08,0.20) -> local PSNR=18.7475
+  w=(0.72,0.10,0.18) -> local PSNR=18.7474
+  w=(0.72,0.12,0.16) -> local PSNR=18.7466
+  w=(0.72,0.15,0.13) -> local PSNR=18.7463
+  w=(0.72,0.18,0.10) -> local PSNR=18.7461
+  w=(0.72,0.20,0.08) -> local PSNR=18.7459
+  w=(0.72,0.22,0.06) -> local PSNR=18.7441
+  w=(0.72,0.25,0.03) -> local PSNR=18.7421
+  w=(0.74,0.05,0.21) -> local PSNR=18.7480
+  w=(0.74,0.08,0.18) -> local PSNR=18.7478
+  w=(0.74,0.10,0.16) -> local PSNR=18.7476
+  w=(0.74,0.12,0.14) -> local PSNR=18.7472
+  w=(0.74,0.15,0.11) -> local PSNR=18.7468
+  w=(0.74,0.18,0.08) -> local PSNR=18.7463
+  w=(0.74,0.20,0.06) -> local PSNR=18.7461
+  w=(0.74,0.22,0.04) -> local PSNR=18.7460
+  w=(0.76,0.05,0.19) -> local PSNR=18.7501
+  w=(0.76,0.08,0.16) -> local PSNR=18.7499
+  w=(0.76,0.10,0.14) -> local PSNR=18.7496
+  w=(0.76,0.12,0.12) -> local PSNR=18.7498
+  w=(0.76,0.15,0.09) -> local PSNR=18.7487
+  w=(0.76,0.18,0.06) -> local PSNR=18.7483
+  w=(0.76,0.20,0.04) -> local PSNR=18.7481
+
+=== Top 10 by Local PSNR ===
+  w=(0.76,0.05,0.19) -> local=18.7501
+  w=(0.76,0.08,0.16) -> local=18.7499
+  w=(0.76,0.12,0.12) -> local=18.7498
+  w=(0.76,0.10,0.14) -> local=18.7496
+  w=(0.76,0.15,0.09) -> local=18.7487
+  w=(0.76,0.18,0.06) -> local=18.7483
+  w=(0.76,0.20,0.04) -> local=18.7481
+  w=(0.74,0.05,0.21) -> local=18.7480
+  w=(0.74,0.08,0.18) -> local=18.7478
+  w=(0.74,0.10,0.16) -> local=18.7476
+
+Best: w1=0.76, w2=0.05, w3=0.19 -> local=18.7501
+
+Generating best ensemble CSV...
+
+Validating /home/luluboy/projects/vrdl_final/submissions/SubmitSrgb_3model_ncr_best.csv...
+✅ Format OK! File size: 320.0 MB
+
+Done! Best weights: (0.76, 0.05, 0.19, np.float64(18.750059767437527))
+EXIT:0

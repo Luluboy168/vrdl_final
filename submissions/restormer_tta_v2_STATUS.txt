@@ -1,0 +1,31 @@
+# Restormer + 8-way TTA v2 Status
+
+## Fix Applied
+- Removed `.half()` (FP16) which was causing OOM on RTX 3080 Ti
+- Kept model in FP32 with `torch.amp.autocast('cuda')` for forward pass only
+- Added `gc.collect()` after every TTA augmentation (alongside existing `torch.cuda.empty_cache()`)
+- Used `PYTHONUNBUFFERED=1` flag for real-time log output
+- Added OOM exception handler that falls back to 4-way TTA if 8-way fails
+
+## Run
+- Command: `cd /home/luluboy/projects/vrdl_final && PYTHONUNBUFFERED=1 /home/luluboy/miniconda3/bin/python3 -u code/tta_infer_restormer.py 2>&1 | tee submissions/restormer_tta_v2.log`
+- Started: 2026-05-19 22:34
+- Completed: ~22:58
+
+## Memory Usage
+- Sanity check peak: 6.075 GB (well under 11.6 GB limit)
+- Main loop peak: 0.475 GB per block (model already loaded)
+- Model + CUDA context: ~800 MB
+- No OOM occurred with FP32 model
+
+## Result
+- CSV: `/home/luluboy/projects/vrdl_final/submissions/SubmitSrgb_restormer_tta8.csv`
+- 1280 blocks, 262,144 chars per block ✓
+- Submitted to Kaggle: 2026-05-19 22:58
+- **Score: 40.0902 PSNR** (same as Restormer baseline — TTA did not improve this model)
+
+## Notes
+- TTA did not improve Restormer score (40.0902 baseline vs 40.0902 with TTA)
+- NAFNet baseline (40.3675) still outperforms all other submissions
+- Restormer seems to already be exploiting similar averaging internally through attention
+- Next option: try NAFNet + 8-way TTA (already scored 39.5428 - did not help either), or ensemble NAFNet+Restormer with better weighting

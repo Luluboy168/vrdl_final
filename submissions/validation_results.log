@@ -1,0 +1,13 @@
+Loading data...
+Traceback (most recent call last):
+  File "/home/luluboy/projects/vrdl_final/code/validate_ensemble.py", line 27, in <module>
+    noisy = noisy_mat['ValidationNoisyBlocksSrgb']   # (40, 32, 256, 256, 3)
+            ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'ValidationNoisyBlocksSrgb'
+Loading data...
+Noisy: (40, 32, 256, 256, 3), GT: (40, 32, 256, 256, 3)
+Loading NAFNet...
+Traceback (most recent call last):
+  File "/home/luluboy/projects/vrdl_final/code/validate_ensemble.py", line 34, in <module>
+    from NAFNet import NAFNet
+ImportError: cannot import name 'NAFNet' from 'NAFNet' (unknown location)

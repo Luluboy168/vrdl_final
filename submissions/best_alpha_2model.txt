@@ -1,0 +1,2 @@
+best_alpha=0.8
+local_psnr=18.7518

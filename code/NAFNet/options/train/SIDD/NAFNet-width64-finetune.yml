@@ -1,0 +1,112 @@
+# NAFNet Fine-tuning on SIDD Medium sRGB
+# Fine-tune from NAFNet-SIDD-width64.pth pretrained weight
+# Usage: cd code/NAFNet && python -m basicsr.train -opt options/train/SIDD/NAFNet-width64-finetune.yml
+name: NAFNet-SIDD-finetune-width64
+model_type: ImageRestorationModel
+scale: 1
+num_gpu: 1  # single RTX 3080 Ti
+manual_seed: 10
+
+datasets:
+  train:
+    name: SIDD-Finetune-Train
+    type: PairedImageDataset
+    dataroot_gt: ./datasets/SIDD/train/gt
+    dataroot_lq: ./datasets/SIDD/train/lq
+    filename_tmpl: '{}'
+    io_backend:
+      type: disk
+    gt_size: 256
+    use_flip: true
+    use_rot: true
+    # data loader
+    use_shuffle: true
+    num_worker_per_gpu: 4
+    batch_size_per_gpu: 2  # reduced from 4 to avoid OOM with fragmented VRAM
+    dataset_enlarge_ratio: 10  # repeat dataset for enough iterations
+    prefetch_mode: ~
+    # normalization
+    mean: [0, 0, 0]
+    std: [1, 1, 1]
+
+  val:
+    name: SIDD-Finetune-Val
+    type: PairedImageDataset
+    dataroot_gt: ./datasets/SIDD/val/gt
+    dataroot_lq: ./datasets/SIDD/val/lq
+    filename_tmpl: '{}'
+    io_backend:
+      type: disk
+
+network_g:
+  type: NAFNet
+  width: 64
+  enc_blk_nums: [2, 2, 4, 8]
+  middle_blk_num: 12
+  dec_blk_nums: [2, 2, 2, 2]
+
+# path — fine-tune from SIDD pretrained weight
+path:
+  pretrain_network_g: ./experiments/pretrained_models/NAFNet-SIDD-width64.pth
+  strict_load_g: true
+  resume_state: ~
+
+# training settings — lower LR for fine-tuning
+train:
+  optim_g:
+    type: AdamW
+    lr: !!float 5e-5  # low LR to avoid catastrophic forgetting
+    weight_decay: 0.
+    betas: [0.9, 0.999]
+
+  scheduler:
+    type: TrueCosineAnnealingLR
+    T_max: 20000
+    eta_min: !!float 1e-6
+
+  total_iter: 20000       # 20K iters, enough for fine-tuning
+  warmup_iter: 500         # gradual warmup
+
+  # losses
+  pixel_opt:
+    type: PSNRLoss
+    loss_weight: 1.0
+    reduction: mean
+
+  # mixed precision
+  use_amp: true
+
+# validation settings
+val:
+  val_freq: !!float 1000  # validate every 1K iters
+  save_img: false
+  use_image: false
+
+  metrics:
+    psnr:
+      type: calculate_psnr
+      crop_border: 0
+      test_y_channel: false
+    ssim:
+      type: calculate_ssim
+      crop_border: 0
+      test_y_channel: false
+
+# logging settings
+logger:
+  print_freq: 100
+  save_checkpoint_freq: !!float 5000  # save every 5K iters
+  use_tb_logger: false
+  wandb:
+    project: ~
+    resume_id: ~
+
+# dist training settings — single GPU
+dist_params:
+  backend: nccl
+  port: 29500
+
+# validation during training — use local val set
+evaluation:
+  freq: 1000
+  save_path: ./results/finetune_val

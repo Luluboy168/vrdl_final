@@ -1,0 +1,71 @@
+# Finetuning Restormer on SIDD Medium sRGB
+name: Finetune_Restormer_SIDD
+model_type: ImageCleanModel
+scale: 1
+num_gpu: 1
+manual_seed: 42
+
+datasets:
+  train:
+    name: TrainSet
+    type: Dataset_PairedImage
+    dataroot_gt: ./Denoising/Datasets/train/SIDD/target_crops
+    dataroot_lq: ./Denoising/Datasets/train/SIDD/input_crops
+    geometric_augs: true
+    filename_tmpl: '{}'
+    io_backend:
+      type: disk
+    use_shuffle: true
+    num_worker_per_gpu: 4
+    batch_size_per_gpu: 4
+    dataset_enlarge_ratio: 10
+    prefetch_mode: ~
+
+network_g:
+  type: Restormer
+  inp_channels: 3
+  out_channels: 3
+  dim: 48
+  num_blocks: [4,6,6,8]
+  num_refinement_blocks: 4
+  heads: [1,2,4,8]
+  ffn_expansion_factor: 2.66
+  bias: False
+  LayerNorm_type: BiasFree
+  dual_pixel_task: False
+
+path:
+  pretrain_network_g: ./pretrained_models/RealDenoising_Restormer.pth
+  strict_load_g: true
+  resume_state: ~
+
+train:
+  total_iter: 5000  # 短訓練：5000 iterations
+  warmup_iter: -1
+  use_grad_clip: true
+  scheduler:
+    type: CosineAnnealingLR
+    T_max: 5000
+    eta_min: 1.0e-6
+  optim_g:
+    type: AdamW
+    lr: !!float 1.0e-5  # 低學習率 fine-tune
+    weight_decay: !!float 1.0e-4
+    betas: [0.9, 0.999]
+  pixel_opt:
+    type: L1Loss
+    loss_weight: 1
+    reduction: mean
+
+val:
+  val_freq: !!float 1000
+  save_img: false
+
+logger:
+  print_freq: 100
+  save_checkpoint_freq: !!float 1000
+  use_tb_logger: false
+
+dist_params:
+  backend: nccl
+  port: 29500

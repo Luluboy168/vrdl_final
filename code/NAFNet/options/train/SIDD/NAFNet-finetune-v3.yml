@@ -1,0 +1,94 @@
+# NAFNet Fine-tuning — Memory-Optimized Config
+# Created: 2026-05-20
+# Fix: batch_size=1, gt_size=128 to avoid OOM on RTX 3080 Ti 12GB
+name: NAFNet-SIDD-finetune-v3
+model_type: ImageRestorationModel
+scale: 1
+num_gpu: 1
+manual_seed: 10
+
+datasets:
+  train:
+    name: SIDD-Finetune-Train
+    type: PairedImageDataset
+    dataroot_gt: ./datasets/SIDD/train/gt
+    dataroot_lq: ./datasets/SIDD/train/lq
+    filename_tmpl: '{}'
+    io_backend:
+      type: disk
+    gt_size: 128        # reduced from 256 to save memory
+    use_flip: true
+    use_rot: true
+    use_shuffle: true
+    num_worker_per_gpu: 2
+    batch_size_per_gpu: 1  # CRITICAL: was 2/4 causing OOM
+    dataset_enlarge_ratio: 10
+    prefetch_mode: ~
+    mean: [0, 0, 0]
+    std: [1, 1, 1]
+
+  val:
+    name: SIDD-Finetune-Val
+    type: PairedImageDataset
+    dataroot_gt: ./datasets/SIDD/val/gt
+    dataroot_lq: ./datasets/SIDD/val/lq
+    filename_tmpl: '{}'
+    io_backend:
+      type: disk
+
+network_g:
+  type: NAFNet
+  width: 64
+  enc_blk_nums: [2, 2, 4, 8]
+  middle_blk_num: 12
+  dec_blk_nums: [2, 2, 2, 2]
+
+path:
+  pretrain_network_g: ./experiments/pretrained_models/NAFNet-SIDD-width64.pth
+  strict_load_g: true
+  resume_state: ~
+
+train:
+  optim_g:
+    type: AdamW
+    lr: !!float 5e-5
+    weight_decay: 0.
+    betas: [0.9, 0.999]
+
+  scheduler:
+    type: TrueCosineAnnealingLR
+    T_max: 20000
+    eta_min: !!float 1e-6
+
+  total_iter: 20000
+  warmup_iter: 500
+
+  pixel_opt:
+    type: PSNRLoss
+    loss_weight: 1.0
+    reduction: mean
+
+  use_amp: true
+
+val:
+  val_freq: !!float 2000
+  save_img: false
+  use_image: false
+  metrics:
+    psnr:
+      type: calculate_psnr
+      crop_border: 0
+      test_y_channel: false
+
+logger:
+  print_freq: 100
+  save_checkpoint_freq: !!float 2000
+  use_tb_logger: false
+
+dist_params:
+  backend: nccl
+  port: 29500
+
+evaluation:
+  freq: 2000
+  save_path: ./results/finetune_val

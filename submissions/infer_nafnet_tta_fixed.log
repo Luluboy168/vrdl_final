@@ -1,0 +1,27 @@
+[DEVICE] cuda
+============================================================
+VRDL Final – NAFNet + 8-way TTA (FIXED)
+============================================================
+Loaded NAFNet from /home/luluboy/projects/vrdl_final/weights/NAFNet-SIDD-width64.pth
+
+🧪 TTA Transform Symmetry Test (fixed version)...
+   rot0: ❌ (diff=407376)
+   rot90: ❌ (diff=407376)
+   rot180: ❌ (diff=407376)
+   rot270: ❌ (diff=407376)
+   hflip: ❌ (diff=407376)
+   rot90+hflip: ❌ (diff=407376)
+   rot180+hflip: ❌ (diff=407376)
+   rot270+hflip: ❌ (diff=407376)
+   Some transforms NOT symmetric — check model behavior on rotated input
+
+📂 Loading /home/luluboy/projects/vrdl_final/data/BenchmarkNoisyBlocksSrgb.mat...
+   shape: (40, 32, 256, 256, 3) → 40×32=1280 blocks
+
+🔁 Running fixed 8-way TTA on 1280 blocks...
+
+✅ Saved: /home/luluboy/projects/vrdl_final/submissions/SubmitSrgb_nafnet_tta8_fixed.csv (335.6 MB, 1280 rows)
+   Format check: base64 len=262144 (expected 262144)
+   ✅ Format OK — ready for Kaggle submit!
+
+📋 Next: Run ensemble script with this CSV to build new ensemble v3

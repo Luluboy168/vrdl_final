@@ -1,0 +1,19 @@
+Traceback (most recent call last):
+  File "/home/luluboy/projects/vrdl_final/code/infer_restormer_ft_e5_fast.py", line 3, in <module>
+    import os, sys, torch, scipy.io, numpy as np, pandas as pd, base64
+ModuleNotFoundError: No module named 'torch'
+EXIT:0
+[DEVICE] cuda
+Loading weights: /home/luluboy/projects/vrdl_final/checkpoints/restormer_ft_epoch5.pth
+Model loaded OK
+Blocks shape: (40, 32, 256, 256, 3)
+  [200/1280] done
+  [400/1280] done
+  [600/1280] done
+  [800/1280] done
+  [1000/1280] done
+  [1200/1280] done
+  [1280/1280] done
+Saved: /home/luluboy/projects/vrdl_final/submissions/SubmitSrgb_restormer_ft_epoch5.csv (335.6 MB)
+EXIT_CODE:0
+EXIT:0

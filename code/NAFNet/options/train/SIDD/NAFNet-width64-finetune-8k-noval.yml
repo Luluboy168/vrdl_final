@@ -1,0 +1,97 @@
+datasets:
+  train:
+    batch_size_per_gpu: 1
+    dataroot_gt: ./datasets/SIDD/train/gt
+    dataroot_lq: ./datasets/SIDD/train/lq
+    dataset_enlarge_ratio: 10
+    filename_tmpl: '{}'
+    gt_size: 256
+    io_backend:
+      type: disk
+    mean:
+    - 0
+    - 0
+    - 0
+    name: SIDD-Finetune-Train
+    num_worker_per_gpu: 4
+    prefetch_mode: null
+    std:
+    - 1
+    - 1
+    - 1
+    type: PairedImageDataset
+    use_flip: true
+    use_rot: true
+    use_shuffle: true
+  val:
+    dataroot_gt: ./datasets/SIDD/val/gt
+    dataroot_lq: ./datasets/SIDD/val/lq
+    filename_tmpl: '{}'
+    io_backend:
+      type: disk
+    name: SIDD-Finetune-Val
+    type: PairedImageDataset
+dist_params:
+  backend: nccl
+  port: 29500
+evaluation:
+  freq: 0
+  save_path: ./results/finetune_val
+logger:
+  print_freq: 100
+  save_checkpoint_freq: 500.0
+  use_tb_logger: false
+  wandb:
+    project: null
+    resume_id: null
+manual_seed: 10
+model_type: ImageRestorationModel
+name: NAFNet-SIDD-finetune-width64-8k
+network_g:
+  dec_blk_nums:
+  - 2
+  - 2
+  - 2
+  - 2
+  enc_blk_nums:
+  - 2
+  - 2
+  - 4
+  - 8
+  middle_blk_num: 12
+  type: NAFNet
+  width: 64
+num_gpu: 1
+path:
+  pretrain_network_g: ./experiments/pretrained_models/NAFNet-SIDD-width64.pth
+  resume_state: null
+  strict_load_g: true
+scale: 1
+train:
+  optim_g:
+    betas:
+    - 0.9
+    - 0.999
+    lr: 5.0e-05
+    type: AdamW
+    weight_decay: 0.0
+  pixel_opt:
+    loss_weight: 1.0
+    reduction: mean
+    type: PSNRLoss
+  scheduler:
+    T_max: 20000
+    eta_min: 1.0e-06
+    type: TrueCosineAnnealingLR
+  total_iter: 20000
+  use_amp: true
+  warmup_iter: 500
+val:
+  metrics:
+    psnr:
+      crop_border: 0
+      test_y_channel: false
+      type: calculate_psnr
+  save_img: false
+  use_image: false
+  val_freq: 999999

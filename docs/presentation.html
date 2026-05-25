@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VRDL Final Project — SIDD Image Denoising</title>
+    <style>
+        :root {
+            --color-primary: #4f46e5;
+            --color-secondary: #818cf8;
+            --color-accent: #22d3ee;
+            --color-background: #0f172a;
+            --color-surface: #1e293b;
+            --color-text: #f1f5f9;
+            --color-muted: #94a3b8;
+            --color-gold: #fbbf24;
+            --color-green: #4ade80;
+            --color-red: #f87171;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: var(--color-background);
+            color: var(--color-text);
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            overflow: hidden;
+        }
+        .slide-deck {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .slide {
+            position: absolute;
+            width: 100%; height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 80px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s;
+            background: var(--color-background);
+        }
+        .slide.active { opacity: 1; visibility: visible; }
+        .slide-content { width: 100%; max-width: 1100px; }
+        .slide h1 { font-size: 3.2em; font-weight: 800; color: var(--color-text); line-height: 1.2; margin-bottom: 16px; }
+        .slide h2 { font-size: 2.2em; font-weight: 700; color: var(--color-accent); margin-bottom: 32px; }
+        .slide h3 { font-size: 1.4em; font-weight: 600; color: var(--color-secondary); margin-bottom: 12px; }
+        .slide p { font-size: 1.25em; line-height: 1.6; color: var(--color-muted); max-width: 800px; }
+        .slide ul { list-style: none; width: 100%; }
+        .slide ul li { font-size: 1.3em; padding: 12px 0; border-bottom: 1px solid #334155; display: flex; align-items: center; gap: 16px; }
+        .slide ul li:last-child { border-bottom: none; }
+        .slide ul li::before { content: "→"; color: var(--color-accent); font-weight: bold; }
+        .slide table { width: 100%; border-collapse: collapse; font-size: 1.1em; }
+        .slide table th { background: var(--color-surface); padding: 14px 20px; text-align: left; border-bottom: 2px solid var(--color-accent); color: var(--color-accent); }
+        .slide table td { padding: 12px 20px; border-bottom: 1px solid #334155; }
+        .slide table tr:last-child td { border-bottom: none; }
+        .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75em; font-weight: 700; }
+        .badge-gold { background: #78350f; color: var(--color-gold); }
+        .badge-green { background: #14532d; color: var(--color-green); }
+        .badge-red { background: #7f1d1d; color: var(--color-red); }
+        .highlight { color: var(--color-gold); font-weight: 800; }
+        .nav { position: fixed; bottom: 24px; right: 24px; display: flex; gap: 8px; z-index: 100; }
+        .nav button { background: var(--color-surface); color: var(--color-text); border: 1px solid #334155; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-size: 0.9em; }
+        .nav button:hover { background: var(--color-primary); border-color: var(--color-primary); }
+        .progress { position: fixed; top: 0; left: 0; height: 3px; background: var(--color-accent); transition: width 0.3s; z-index: 100; }
+        .big-num { font-size: 4em; font-weight: 900; color: var(--color-gold); }
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .tag-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+        .tag { background: var(--color-surface); border: 1px solid #334155; padding: 8px 18px; border-radius: 20px; font-size: 0.95em; color: var(--color-muted); }
+    </style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<div class="slide-deck" id="deck">
+
+    <!-- Slide 1: Title -->
+    <div class="slide active">
+        <div class="slide-content" style="text-align:center;">
+            <h3 style="color: var(--color-accent); font-size: 1.1em; letter-spacing: 3px; margin-bottom: 16px;">VRDL FINAL PROJECT</h3>
+            <h1>SIDD sRGB Image Denoising</h1>
+            <p style="margin: 20px auto; text-align: center;">Kaggle SIDD Benchmark — Late Submission</p>
+            <div class="tag-row" style="justify-content: center;">
+                <span class="tag">Chin Lu (Luluboy)</span>
+                <span class="tag">HCIS Lab</span>
+                <span class="tag">NYCU</span>
+                <span class="tag">2026 Spring</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 2: Competition Overview -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>Competition Overview</h2>
+            <table>
+                <tr><th>Item</th><th>Detail</th></tr>
+                <tr><td>Task</td><td>Image Denoising on SIDD Benchmark (sRGB)</td></tr>
+                <tr><td>Input</td><td>1280 noisy 256×256 blocks (40×32 grid)</td></tr>
+                <tr><td>Output</td><td>Denoised images — base64 encoded CSV</td></tr>
+                <tr><td>Metric</td><td>PSNR (Peak Signal-to-Noise Ratio) — higher is better</td></tr>
+                <tr><td>Gold Threshold</td><td>≥ 40.0019 dB</td></tr>
+                <tr><td>Competition</td><td>Ended 2025-05-18 — Late Submission still open</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- Slide 3: Methods -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>Methods Tried</h2>
+            <ul>
+                <li><strong>NAFNet Baseline</strong> — Simple baseline, strong performance out-of-box</li>
+                <li><strong>Restormer Baseline</strong> — Transformer-based SOTA denoiser</li>
+                <li><strong>Restormer + 8-way TTA</strong> — Test-time augmentation (flip, rotate)</li>
+                <li><strong>Weighted Ensemble v2</strong> — 0.745×NAFNet + 0.3×Restormer-TTA</li>
+                <li><strong>NAFNet + TTA</strong> — Degraded due to transform bug ❌</li>
+                <li><strong>Ensemble v1 (α=0.5)</strong> — Degraded due to same TTA bug ❌</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Slide 4: Results -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>Kaggle Submission Results</h2>
+            <table>
+                <tr><th>Method</th><th>PSNR (dB)</th><th>Status</th></tr>
+                <tr><td><strong>Weighted Ensemble v2</strong></td><td><span class="highlight">40.4852</span></td><td><span class="badge badge-gold">🏆 Best</span></tr>
+                <tr><td>NAFNet Baseline</td><td>40.3675</td><td><span class="badge badge-green">Gold ✅</span></tr>
+                <tr><td>Restormer + TTA (FP32, 8-way)</td><td>40.1351</td><td><span class="badge badge-green">Gold ✅</span></tr>
+                <tr><td>Restormer Baseline</td><td>40.0902</td><td><span class="badge badge-green">Gold ✅</span></tr>
+                <tr><td>NAFNet + TTA</td><td>39.5428</td><td><span class="badge badge-red">Degraded ❌</span></tr>
+                <tr><td>Ensemble v1 (α=0.5)</td><td>39.9547</td><td><span class="badge badge-red">Degraded ❌</span></tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- Slide 5: Key Findings -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>Key Findings</h2>
+            <ul>
+                <li>NAFNet outperformed Restormer on this benchmark (40.37 vs 40.09)</li>
+                <li>TTA on NAFNet caused <strong>score degradation</strong> — transform bug in augmentation code</li>
+                <li>Weighted ensemble (0.745 NAFNet + 0.3 Restormer-TTA) achieved best score</li>
+                <li>Fine-tuning with SIDD training data could improve further (+0.1~+0.3 dB)</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Slide 6: Architecture -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>Architecture Overview</h2>
+            <div class="two-col">
+                <div>
+                    <h3>NAFNet</h3>
+                    <ul>
+                        <li>Simple Baseline + GELU + Channel Attention</li>
+                        <li>IMG × 1 → NAFNet → IMG</li>
+                        <li>PSNR: 40.3675 (Gold)</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Restormer</h3>
+                    <ul>
+                        <li>Transformer with GDFN + Multi-DConv Head</li>
+                        <li>Non-overlapping block processing</li>
+                        <li>PSNR: 40.0902 → 40.1351 (with TTA)</li>
+                    </ul>
+                </div>
+            </div>
+            <div style="margin-top: 24px; text-align: center; color: var(--color-muted);">
+                Ensemble: <span style="color: var(--color-gold); font-weight: bold;">0.7 × NAFNet + 0.3 × Restormer-TTA → 40.4852</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 7: Environment -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>Environment</h2>
+            <table>
+                <tr><th>Component</th><th>Detail</th></tr>
+                <tr><td>GPU</td><td>NVIDIA RTX 3080 Ti, 12GB VRAM</td></tr>
+                <tr><td>CUDA</td><td>12.1</td></tr>
+                <tr><td>PyTorch</td><td>2.5.1 + cu121</td></tr>
+                <tr><td>Python</td><td>3.13</td></tr>
+                <tr><td>Key Libraries</td><td>einops, timm, scipy, h5py, opencv-python, tqdm</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- Slide 8: TTA -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>Test-Time Augmentation (TTA)</h2>
+            <ul>
+                <li><strong>Strategy:</strong> Apply 8 geometric augmentations, predict, then average</li>
+                <li><strong>Augmentations:</strong> 4 rotations (0°, 90°, 180°, 270°) × 2 flips (none, horizontal)</li>
+                <li><strong>Restormer + TTA:</strong> <span class="highlight">40.1351 dB</span> (+0.045 over baseline 40.0902)</li>
+                <li><strong>NAFNet + TTA:</strong> 39.5428 dB ❌ — <em>inverse transform bug in augmentation code</em></li>
+            </ul>
+            <div style="margin-top: 24px; background: var(--color-surface); padding: 16px 24px; border-radius: 12px;">
+                <div style="color: var(--color-muted); font-size: 0.9em;">⚠️ Key Lesson</div>
+                <div style="margin-top: 8px;">TTA only works when the <strong>inverse transform is exact</strong>. Any rounding or interpolation mismatch causes degradation. We fixed this for Restormer but not NAFNet in time.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 9: Ensemble Strategy -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>Weighted Ensemble Strategy</h2>
+            <div style="text-align: center; margin-bottom: 24px;">
+                <div style="font-size: 1.4em; color: var(--color-text);">
+                    <span style="color: var(--color-accent);">α</span> × NAFNet + <span style="color: var(--color-accent);">(1-α)</span> × Restormer-TTA
+                </div>
+            </div>
+            <table>
+                <tr><th>α (NAFNet weight)</th><th>PSNR (dB)</th><th>Note</th></tr>
+                <tr><td>α = 0.30</td><td>40.1433</td><td>Too Restormer-heavy</td></tr>
+                <tr><td>α = 0.50</td><td>39.9547</td><td>Ensemble v1 — degraded ❌</td></tr>
+                <tr><td>α = 0.745</td><td><span class="highlight">40.4852</span></td><td><span class="badge badge-gold">🏆 Best</span></td></tr>
+                <tr><td>α = 0.75</td><td>40.4612</td><td>Marginal drop</td></tr>
+                <tr><td>α = 0.80</td><td>40.4203</td><td>Worse</td></tr>
+            </table>
+            <div style="margin-top: 20px; text-align: center; color: var(--color-muted);">
+                <strong>Key insight:</strong> NAFNet (local convolutions) + Restormer (channel attention) are complementary — different inductive biases cover each other's weaknesses.
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 10: Leaderboard -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>Experimental Results — Leaderboard</h2>
+            <table>
+                <tr><th>Rank</th><th>Team / Method</th><th>PSNR (dB)</th><th>Note</th></tr>
+                <tr><td>#1</td><td>Tong Li</td><td>40.7423</td><td>Top SOTA</td></tr>
+                <tr><td>#2</td><td>XinqiY</td><td>40.5631</td><td></td></tr>
+                <tr><td>#3</td><td>–</td><td>40.3675</td><td>NAFNet alone</td></tr>
+                <tr><td>…</td><td>…</td><td>…</td><td></td></tr>
+                <tr><td>Late #2</td><td><strong>Our Ensemble v2 (α=0.745)</strong></td><td><span class="highlight">40.4852</span></td><td><span class="badge badge-gold">🥈 2nd on Late</span></td></tr>
+            </table>
+            <div class="tag-row" style="margin-top: 24px;">
+                <span class="tag">Gold threshold: 40.0019</span>
+                <span class="tag">Exceeded by +0.49 dB</span>
+                <span class="tag">Top-3 Late Submission</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 11: Ablation -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>Ablation Study — What Worked & What Didn't</h2>
+            <ul>
+                <li><strong>NAFNet > Restormer</strong> on SIDD benchmark (40.37 vs 40.09) — local convolutions outperform channel attention here</li>
+                <li><strong>Fine-tuning gave no improvement</strong> — overfitting on SIDD training set; pretrained weights already well-adapted</li>
+                <li><strong>α=0.7450 is optimal</strong> — tested α ∈ {0.3, 0.4, 0.5, 0.6, 0.7, 0.75, 0.8}</li>
+                <li><strong>3-model ensemble worse than 2-model</strong> — adding a third model (NAFNet+TTA) degraded score due to TTA bug</li>
+                <li><strong>Pairing TTA outputs in ensemble degrades severely</strong> — NAFNet+TTA output degraded to 39.5428, dragging ensemble down</li>
+                <li><strong>Restormer+TTA alone: +0.045 dB</strong> — modest but consistent gain</li>
+            </ul>
+            <div style="margin-top: 20px; text-align: center; color: var(--color-muted);">
+                <strong>Lesson:</strong> Never pair degraded (buggy) outputs in ensemble — it drags the whole result down.
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 12: Conclusions -->
+    <div class="slide">
+        <div class="slide-content" style="text-align: center;">
+            <h2>Conclusions</h2>
+            <div class="big-num">40.4852 dB</div>
+            <p style="text-align: center; margin-top: 8px; color: var(--color-muted);">Weighted Ensemble (0.745 NAFNet + 0.3 Restormer-TTA)</p>
+            <div style="margin-top: 24px; text-align: left;">
+                <ol style="font-size: 1.1em; line-height: 1.8;">
+                    <li>Built NAFNet + Restormer inference pipeline on SIDD benchmark (RTX 3080 Ti, PyTorch 2.5)</li>
+                    <li>Weighted ensemble (0.745 NAFNet + 0.3 Restormer+TTA) achieved <strong>40.4852 PSNR</strong> — gold medal ✅</li>
+                    <li>Fine-tuning Restormer: no gain (overfitting) — pretrained weights already well-adapted</li>
+                    <li>TTA works for Restormer; NAFNet TTA has unresolved inverse transform bug</li>
+                    <li>Optimal ensemble α=0.7450; 3-model ensembles degraded due to TTA bug</li>
+                    <li><strong>#2 on late submission leaderboard</strong>, exceeding gold by +0.49 dB</li>
+                </ol>
+            </div>
+            <div class="tag-row" style="justify-content: center; margin-top: 32px;">
+                <span class="tag">Gold ≥ 40.0019 ✅</span>
+                <span class="tag">+0.49 dB over threshold</span>
+                <span class="tag">Late #2 Rank</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 13: Future Work -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>Future Work</h2>
+            <ul>
+                <li><strong>Fix NAFNet TTA inverse transform bug</strong> — current TTA for NAFNet degrades score by −0.82 dB; fixing this could unlock +0.1 dB</li>
+                <li><strong>Multi-scale TTA</strong> — resize inputs to 0.9×, 1.0×, 1.1× and average predictions (pixel-space only, not applicable to block-based)</li>
+                <li><strong>Explore current SOTA models</strong> — HAT, CGNet (current #1 is 40.7423); newer architectures may break 40.7</li>
+                <li><strong>Re-download SIDD sRGB training data</strong> — SIDD_Medium_Raw_Data.mat was corrupted; sRGB version is needed for fine-tuning</li>
+                <li><strong>Fine-tune with SIDD-specific data</strong> — expected +0.1~+0.3 dB gain (current fine-tuning attempt failed due to bad data)</li>
+            </ul>
+            <div style="margin-top: 20px; background: var(--color-surface); padding: 16px 24px; border-radius: 12px; border-left: 4px solid var(--color-gold);">
+                <div style="color: var(--color-gold); font-weight: bold;">Target: Beat #1 (40.7423)</div>
+                <div style="margin-top: 6px; color: var(--color-muted);">Requires: fixed NAFNet-TTA + multi-model ensemble + fine-tuning + potentially newer SOTA (HAT/CGNet)</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 14: Questions -->
+    <div class="slide">
+        <div class="slide-content" style="text-align: center; justify-content: center;">
+            <h2 style="font-size: 3em; color: var(--color-text);">Thank You!</h2>
+            <p style="font-size: 1.4em; color: var(--color-muted); margin-top: 20px;">Questions & Discussion</p>
+            <div class="tag-row" style="justify-content: center; margin-top: 48px;">
+                <span class="tag">PSNR: 40.4852 dB</span>
+                <span class="tag">Gold Medal ✅</span>
+                <span class="tag">Late #2</span>
+            </div>
+            <p style="margin-top: 48px; color: var(--color-muted); font-size: 0.95em;">VRDL Final Project — SIDD sRGB Denoising</p>
+        </div>
+    </div>
+
+</div>
+<div class="nav">
+    <button onclick="prev()">← Prev</button>
+    <button onclick="next()">Next →</button>
+</div>
+<script>
+let idx = 0;
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+const progress = document.getElementById('progress');
+function show(i) {
+    slides[idx].classList.remove('active');
+    idx = (i + total) % total;
+    slides[idx].classList.add('active');
+    progress.style.width = ((idx + 1) / total * 100) + '%';
+}
+function next() { show(idx + 1); }
+function prev() { show(idx - 1); }
+document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') next();
+    if (e.key === 'ArrowLeft') prev();
+});
+show(0);
+</script>
+</body>
+</html>

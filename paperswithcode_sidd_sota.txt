@@ -1,0 +1,59 @@
+# SIDD Benchmark SOTA Models (sRGB) - PapersWithCode / OpenCodePapers
+# Retrieved: 2026-05-24
+# Benchmark: Image Denoising on SIDD
+
+## Top SOTA Models (by PSNR on sRGB):
+
+1. CGNet (CascadedGaze) - PSNR: 40.39 / SSIM: 0.964
+   Paper: https://arxiv.org/abs/2401.15235
+   Code: https://github.com/Ascend-Research/CascadedGaze
+
+2. KBNet (Kernel Basis Network) - PSNR: 40.35 / SSIM: 0.972
+   Paper: https://arxiv.org/abs/2303.02881
+   Code: https://github.com/zhangyi-3/kbnet
+
+3. NAFNet - PSNR: 40.30 / SSIM: 0.961
+   Paper: https://arxiv.org/abs/2204.04676
+   Code: https://github.com/megvii-research/NAFNet
+
+4. SSAMAN - PSNR: 40.08 / SSIM: 0.962
+   Paper: https://ieeexplore.ieee.org/abstract/document/10495777
+   Code: https://github.com/anas-zafar/SSAMAN
+
+5. PNGAN - PSNR: 40.07 / SSIM: 0.960
+   Paper: https://arxiv.org/abs/2204.02844
+   Code: https://github.com/caiyuanhao1998/PNGAN
+
+6. Restormer - PSNR: 40.02 / SSIM: 0.960
+   Paper: https://arxiv.org/abs/2111.09881
+   Code: https://github.com/swz30/restormer
+
+7. HINet - PSNR: 39.99 / SSIM: 0.958
+   Paper: https://arxiv.org/abs/2105.06086
+   Code: https://github.com/megvii-model/HINet
+
+8. MAXIM-3S - PSNR: 39.96 / SSIM: 0.960
+   Paper: https://arxiv.org/abs/2201.02973
+   Code: https://github.com/google-research/maxim
+
+9. Uformer-B - PSNR: 39.89 / SSIM: 0.960
+   Paper: https://arxiv.org/abs/2106.03106
+   Code: https://github.com/ZhendongWang6/Uformer
+
+10. MIRNet - PSNR: 39.72 / SSIM: 0.959
+    Paper: https://arxiv.org/abs/2003.06792
+    Code: https://github.com/swz30/restormer
+
+## Reference baseline PSNRs mentioned in task:
+- Restormer/NAFNet/MIRNetv2 baseline: ~40.4852 (likely from SIDD benchmark)
+
+## Notes:
+- CGNet is the current SOTA on PapersWithCode
+- NAFNet's 40.30 dB is the original paper result; fine-tuned versions may reach higher
+- The task references 40.4852 as baseline - this may be from a specific fine-tuned Restormer/NAFNet
+- CGNet (Jan 2024) and KBNet (Mar 2023) are the latest SOTA models
+
+## Dataset:
+- SIDD Medium sRGB Download: http://130.63.97.225/share/SIDD_Medium_Srgb.zip (~12GB)
+- Download location: /home/luluboy/data/sidd_srgb/
+- MD5: f95b4bc9ec1dd3fe4ebd61aeacad3991

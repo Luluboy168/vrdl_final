@@ -1,0 +1,26 @@
+[DEVICE] Using: cuda
+============================================================
+Restormer + 8-way TTA Inference
+============================================================
+Loading Restormer weights from: /home/luluboy/projects/vrdl_final/weights/RealDenoising_Restormer.pth
+/home/luluboy/projects/vrdl_final/code/tta_infer_restormer.py:46: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  ckpt = torch.load(WEIGHT_FILE, map_location='cpu')
+Model loaded successfully (FP32)
+Running sanity check (4-way TTA)...
+  Sanity check OK. Peak: 6.075GB
+Selected TTA strategy: 8-way
+Loading data from /home/luluboy/projects/vrdl_final/data/BenchmarkNoisyBlocksSrgb.mat...
+  Shape: (40, 32, 256, 256, 3) -> 1280 blocks
+
+Running TTA inference on 1280 blocks...
+  [200/1280] done. Peak: 0.475GB
+  [400/1280] done. Peak: 0.475GB
+  [600/1280] done. Peak: 0.475GB
+  [800/1280] done. Peak: 0.475GB
+  [1000/1280] done. Peak: 0.475GB
+  [1200/1280] done. Peak: 0.475GB
+  [1280/1280] done. Peak: 0.475GB
+
+Done! Saved /home/luluboy/projects/vrdl_final/submissions/SubmitSrgb_restormer_tta8.csv (335.6 MB, 1280 rows)
+Peak GPU: 0.475 GB
+TTA variants used: 8-way

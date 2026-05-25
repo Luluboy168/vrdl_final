@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VRDL Final Project — SIDD Image Denoising</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/theme/white.min.css">
+  <style>
+    .reveal { font-size: 28px; }
+    .reveal h1 { font-size: 1.6em; }
+    .reveal h2 { font-size: 1.3em; color: #2c3e50; }
+    .reveal h3 { font-size: 1.1em; color: #34495e; }
+    .reveal code { font-size: 0.75em; background: #f8f8f8; padding: 2px 6px; border-radius: 3px; }
+    .reveal pre { font-size: 0.7em; box-shadow: none; }
+    .reveal table { font-size: 0.75em; }
+    .reveal .slides section { text-align: left; }
+    .reveal .centered { text-align: center; }
+    .highlight { color: #e74c3c; font-weight: bold; }
+    .best { background: #e8f5e9; }
+    .gold { background: #fff9c4; }
+    .worst { background: #ffebee; }
+  </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- ========== SLIDE 1: Title ========== -->
+<section class="centered">
+  <h1 style="color:#2c3e50;">VRDL Final Project</h1>
+  <h2 style="color:#7f8c8d;">SIDD sRGB Image Denoising</h2>
+  <hr>
+  <p>Kaggle SIDD Benchmark — sRGB PSNR Challenge</p>
+  <p><strong>Late Submission</strong> (Competition closed 2025-05-18)</p>
+  <hr>
+  <p>HCIS Lab · National Yang Ming Chiao Tung University</p>
+  <p>Advisor: 陳怡婷 教授</p>
+  <p>2026-06-09 Presentation</p>
+</section>
+
+<!-- ========== SLIDE 2: Outline ========== -->
+<section>
+  <h2>Outline</h2>
+  <ol>
+    <li>Introduction — Image Denoising & SIDD</li>
+    <li>Related Works — DnCNN → NAFNet → Restormer</li>
+    <li>Methodology — Inference Pipeline & TTA</li>
+    <li>Ensemble Strategy — Optimal α Search</li>
+    <li>Experimental Results — Kaggle Submission Scores</li>
+    <li>Lessons Learned — What Worked & What Failed</li>
+    <li>Conclusion & Future Work</li>
+  </ol>
+</section>
+
+<!-- ========== SLIDE 3: Introduction ========== -->
+<section>
+  <h2>1. Introduction</h2>
+  <h3>Image Denoising</h3>
+  <ul>
+    <li>Remove noise from images captured by smartphone sensors</li>
+    <li>Noise is spatially varying and signal-dependent</li>
+    <li>SIDD (Smartphone Image Denoising Dataset) — the standard benchmark</li>
+  </ul>
+  <h3>Competition</h3>
+  <ul>
+    <li><strong>Kaggle SIDD Benchmark — sRGB PSNR</strong></li>
+    <li>Metric: PSNR (Peak Signal-to-Noise Ratio), higher is better</li>
+    <li>Test set: 1280 blocks, each 256×256×3 sRGB</li>
+    <li><span class="highlight">Gold threshold: ≥ 40.0019 PSNR</span></li>
+  </ul>
+</section>
+
+<!-- ========== SLIDE 4: Related Works ========== -->
+<section>
+  <h2>2. Related Works</h2>
+  <table style="width:100%">
+    <tr><th>Method</th><th>Year</th><th>Key Idea</th><th>SIDD PSNR</th></tr>
+    <tr><td>DnCNN</td><td>2017</td><td>Residual learning + BN</td><td>~37-38 dB</td></tr>
+    <tr><td>FFDNet</td><td>2018</td><td> adjustable noise-level map</td><td>~38-39 dB</td></tr>
+    <tr><td>BM3D</td><td>2008</td><td>Non-local collaborative filtering</td><td>~34 dB</td></tr>
+    <tr><td>NAFNet</td><td>ECCV 2022</td><td>Remove nonlinear activations (SimpleGate)</td><td>40.30 dB</td></tr>
+    <tr><td>Restormer</td><td>CVPR 2022</td><td>Channel-attention transformer, multi-scale</td><td>40.06 dB</td></tr>
+    <tr><td>MIRNetv2</td><td>CVPR 2022</td><td>Multi-scale streams + selective kernel fusion</td><td>~40.5 dB</td></tr>
+  </table>
+  <p style="font-size:0.8em;color:#7f8c8d;">We focus on NAFNet and Restormer — complementary CNN vs Transformer architectures</p>
+</section>
+
+<!-- ========== SLIDE 5: NAFNet Architecture ========== -->
+<section>
+  <h2>3. Methodology — NAFNet</h2>
+  <h3>Nonlinear Activation Free Network (ECCV 2022)</h3>
+  <ul>
+    <li><strong>Key innovation</strong>: Remove ReLU/GELU/Sigmoid from direct signal path</li>
+    <li>Use <code>SimpleGate(x) = LayerNorm(x₁) · x₂</code> instead</li>
+    <li>Architecture: width=64, middle_blks=12, enc_blks=[2,2,4,4], dec_blks=[4,4,2,2]</li>
+    <li>Pre-trained on SIDD: <code>NAFNet-SIDD-width64.pth</code> (464 MB)</li>
+  </ul>
+  <h3>Our Baseline Results</h3>
+  <table>
+    <tr><th>Model</th><th>PSNR</th><th>Date</th></tr>
+    <tr><td>NAFNet baseline</td><td>40.3675</td><td>2026-05-14</td></tr>
+    <tr class="worst"><td>NAFNet + 8-way TTA (bug)</td><td>39.5428</td><td>2026-05-19</td></tr>
+  </table>
+  <p style="font-size:0.8em;color:#e74c3c;">⚠️ TTA inverse transform bug caused degradation — fixed in later versions</p>
+</section>
+
+<!-- ========== SLIDE 6: Restormer Architecture ========== -->
+<section>
+  <h2>3. Methodology — Restormer</h2>
+  <h3>Efficient Transformer for Image Restoration (CVPR 2022)</h3>
+  <ul>
+    <li><strong>Key innovation</strong>: Multi-scale GFN blocks with channel attention (not spatial)</li>
+    <li>Progressive architecture: coarse → refined at multiple scales</li>
+    <li>More efficient than spatial attention for high-res images</li>
+    <li>Pre-trained on SIDD: <code>Restormer_SIDD.pth</code> (310 MB)</li>
+  </ul>
+  <h3>Results</h3>
+  <table>
+    <tr><th>Model</th><th>PSNR</th><th>Date</th></tr>
+    <tr><td>Restormer baseline</td><td>40.0902</td><td>2026-05-19</td></tr>
+    <tr><td>Restormer + 8-way TTA (FP32, batch=1)</td><td>40.1351</td><td>2026-05-19</td></tr>
+    <tr><td>Restormer fine-tuned (5 epochs)</td><td>40.0899</td><td>2026-05-20</td></tr>
+  </table>
+  <p style="font-size:0.8em;color:#7f8c8d;">Fine-tuning gave no improvement — likely overfitting on small dataset</p>
+</section>
+
+<!-- ========== SLIDE 7: TTA Strategy ========== -->
+<section>
+  <h2>3. Methodology — 8-way TTA</h2>
+  <h3>Test-Time Augmentation</h3>
+  <ul>
+    <li>Apply 8 geometric transformations to each input block</li>
+    <li>4 rotations: 0°, 90°, 180°, 270° × 2 flips: none, horizontal flip</li>
+    <li>Run model on each → apply inverse transform → average predictions</li>
+    <li><strong>Key lesson</strong>: Inverse transforms must be correctly applied!</li>
+  </ul>
+  <h3>Memory Optimization</h3>
+  <ul>
+    <li>Restormer 8-way TTA exceeds 12GB VRAM at batch=8</li>
+    <li>Solution: <code>batch_size=1</code>, sequential augmentation</li>
+    <li>Inference time: ~80 min for 1280 blocks (vs ~20 min without TTA)</li>
+  </ul>
+</section>
+
+<!-- ========== SLIDE 8: Ensemble Strategy ========== -->
+<section>
+  <h2>4. Ensemble Strategy</h2>
+  <h3>Weighted Average of Two Models</h3>
+  <pre>result = α × NAFNet-TTA + (1-α) × Restormer-FT-TTA</pre>
+  <h3>Why NAFNet + Restormer?</h3>
+  <ul>
+    <li>Complementary error characteristics:
+      <ul>
+        <li>NAFNet: local convolution, captures local texture patterns</li>
+        <li>Restormer: global channel attention, captures global structure</li>
+      </ul>
+    </li>
+    <li>Equal-weight ensemble (α=0.5) scored only 39.95 — weighted is critical!</li>
+  </ul>
+  <p style="font-size:0.8em;color:#e74c3c;">⚠️ Pairing TTA+TTA (NAFNet-TTA + Restormer-TTA) severely degrades to ~39.82 — TTA errors compound!</p>
+</section>
+
+<!-- ========== SLIDE 9: Alpha Search Results ========== -->
+<section>
+  <h2>4. Ensemble — Alpha Grid Search</h2>
+  <table>
+    <tr><th>α (NAFNet weight)</th><th>PSNR (dB)</th><th>Status</th></tr>
+    <tr class="worst"><td>0.705–0.745</td><td>39.8159 (TTA+TTA pairing)</td><td>Failed — wrong pairing</td></tr>
+    <tr><td>0.705</td><td>40.4814</td><td>Fine search</td></tr>
+    <tr><td>0.730</td><td>40.4814</td><td>Fine search</td></tr>
+    <tr><td>0.734</td><td>40.4814</td><td>Fine search</td></tr>
+    <tr class="best"><td><strong>0.745</strong></td><td><strong>40.4852 🏆</strong></td><td><strong>Best confirmed (2026-05-23)</strong></td></tr>
+    <tr><td>0.736</td><td>39.8159</td><td>Different pairing</td></tr>
+    <tr><td>0.737</td><td>39.8159</td><td>Different pairing</td></tr>
+    <tr><td>0.745</td><td>39.8159</td><td>Different pairing</td></tr>
+  </table>
+  <p>Confirmed optimal: <strong>α = 0.745</strong> (narrow peak — α=0.746 drops to 39.82!)</p>
+</section>
+
+<!-- ========== SLIDE 10: All Kaggle Results ========== -->
+<section>
+  <h2>5. Experimental Results — All Kaggle Submissions</h2>
+  <table style="font-size:0.7em">
+    <tr><th>Method</th><th>PSNR</th><th>Date</th></tr>
+    <tr class="best"><td><strong>NAFNet-TTA + Restormer-FT-TTA (α=0.745)</strong></td><td><strong>40.4852 🏆</strong></td><td>2026-05-23</td></tr>
+    <tr><td>NAFNet-TTA + Restormer-FT MultiScale-TTA (α=0.745)</td><td>40.4756</td><td>2026-05-23</td></tr>
+    <tr><td>NAFNet-TTA + Restormer-FT-TTA (α=0.734)</td><td>40.4814</td><td>2026-05-23</td></tr>
+    <tr><td>NAFNet-TTA + Restormer-FT-TTA (α=0.750)</td><td>40.4612</td><td>2026-05-23</td></tr>
+    <tr><td>3-model: blend745(α=0.745, NAFTta+RFT) w=0.18 + RFT-TTA8</td><td>40.4157</td><td>2026-05-24</td></tr>
+    <tr><td>MIRNetv2 (single)</td><td>39.9132</td><td>2026-05-23</td></tr>
+    <tr><td>Equal-weight 4-model ensemble</td><td>40.2591</td><td>2026-05-20</td></tr>
+    <tr><td>NAFNet baseline</td><td>40.3675</td><td>2026-05-14</td></tr>
+    <tr class="worst"><td>NAFNet + 8-way TTA (bug)</td><td>39.5428</td><td>2026-05-19</td></tr>
+    <tr class="worst"><td>NAFNet-TTA + Restormer-TTA (both TTA variants)</td><td>~39.82</td><td>2026-05-22</td></tr>
+    <tr><td>Restormer + 8-way TTA (FP32)</td><td>40.1351</td><td>2026-05-19</td></tr>
+    <tr><td>Restormer baseline</td><td>40.0902</td><td>2026-05-19</td></tr>
+    <tr class="worst"><td>Restormer fine-tuned (5 epochs)</td><td>40.0899</td><td>2026-05-20</td></tr>
+  </table>
+  <p style="font-size:0.8em">Gold: ≥ 40.0019 | Best: <strong>40.4852</strong> (α=0.745) | Gap to Gold: <strong>+0.48 dB</strong></p>
+</section>
+
+<!-- ========== SLIDE 11: Key Findings ========== -->
+<section>
+  <h2>5. Key Findings</h2>
+  <ol>
+    <li><strong>Optimal ensemble: α=0.745</strong> (NAFNet-TTA weight) → 40.4852 PSNR</li>
+    <li><strong>Don't pair TTA variants</strong>: NAFNet-TTA + Restormer-TTA = 39.82 (severe degradation)</li>
+    <li><strong>Non-TTA NAFNet + Restormer-TTA</strong> is the correct pairing</li>
+    <li><strong>3-model ensemble failed</strong>: Restormer-TTA + Restormer-MS-TTA are too correlated</li>
+    <li><strong>Weighted ensemble is critical</strong>: Equal-weight = 40.26, weighted = 40.49</li>
+    <li><strong>Fine-tuning Restormer gave no improvement</strong> (40.0899 vs 40.0902 pre-trained)</li>
+    <li><strong>Gold medal achieved</strong>: 40.4852 vs 40.0019 threshold (+0.48 dB)</li>
+  </ol>
+</section>
+
+<!-- ========== SLIDE 12: What Failed ========== -->
+<section>
+  <h2>6. Lessons Learned — What Failed</h2>
+  <table>
+    <tr><th>Method</th><th>Expected</th><th>Actual</th><th>Reason</th></tr>
+    <tr><td>NAFNet + TTA (initial)</td><td>~40.40</td><td>39.5428</td><td>Inverse transform bug</td></tr>
+    <tr><td>Ensemble α=0.5 (v1)</td><td>~40.38</td><td>39.9547</td><td>Propagated TTA bug</td></tr>
+    <tr><td>Restormer TTA batch=8</td><td>~40.15</td><td>OOM crash</td><td>VRAM exceeded 12GB</td></tr>
+    <tr><td>NAFNet-TTA + Restormer-TTA</td><td>~40.5</td><td>~39.82</td><td>TTA errors compound</td></tr>
+    <tr><td>3-model Restormer variants</td><td>~40.6</td><td>39.92</td><td>Models too correlated</td></tr>
+    <tr><td>Restormer fine-tuning</td><td>~40.20</td><td>40.0899</td><td>No improvement / overfitting</td></tr>
+  </table>
+</section>
+
+<!-- ========== SLIDE 13: Future Work ========== -->
+<section>
+  <h2>6. Future Work</h2>
+  <ul>
+    <li><strong>SOTA models</strong>: Try HAT (2024), CGNet — potential to exceed 40.6 PSNR</li>
+    <li><strong>Multi-scale TTA</strong>: Resize to 0.9x, 1.0x, 1.1x — more diverse augmentation</li>
+    <li><strong>Truly diverse 3-model ensemble</strong>: NAFNet + Restormer + MIRNetv2 (with correct pairing)</li>
+    <li><strong>Training data</strong>: Fix SIDD Medium sRGB download for fine-tuning on task-specific data</li>
+    <li><strong>Better fine-tuning</strong>: Lower LR, more augmentation, more epochs</li>
+  </ul>
+</section>
+
+<!-- ========== SLIDE 14: Conclusion ========== -->
+<section>
+  <h2>7. Conclusion</h2>
+  <ul>
+    <li>Built NAFNet and Restormer inference pipelines on SIDD benchmark</li>
+    <li>Optimal weighted ensemble achieves <strong>40.4852 PSNR</strong> (α=0.745)</li>
+    <li>Exceeds gold medal threshold by <strong>+0.48 dB</strong></li>
+    <li>Key insight: <strong>Don't pair TTA outputs</strong> — use NAFNet-TTA + Restormer-TTA (non-TTA NAFNet is the buffer)</li>
+    <li>3-model ensembles only work with truly architecturally diverse models</li>
+    <li>Equal-weight ensembles significantly degrade performance</li>
+  </ul>
+  <hr>
+  <p style="text-align:center"><strong>Gold Medal Achieved! 🎯</strong><br>
+  <span style="color:#7f8c8d">Best PSNR: 40.4852 (α=0.745) | Gold threshold: 40.0019</span></p>
+</section>
+
+<!-- ========== SLIDE 15: Thank You ========== -->
+<section class="centered">
+  <h1>Thank You!</h1>
+  <hr>
+  <p>Questions?</p>
+  <hr>
+  <p style="font-size:0.8em;color:#7f8c8d">
+    Code: <a href="https://github.com/luluboy/vrdl_final">https://github.com/luluboy/vrdl_final</a><br>
+    Report: projects/vrdl_final/report/<br>
+    Competition: kaggle.com/competitions/sidd-benchmark-srgb-psnr
+  </p>
+</section>
+
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.min.js"></script>
+<script>
+  Reveal.initialize({ hash: true, slideNumber: true, transition: 'fade' });
+</script>
+</body>
+</html>

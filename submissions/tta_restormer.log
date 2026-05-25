@@ -1,0 +1,172 @@
+/home/luluboy/projects/vrdl_final/code/tta_infer_restormer.py:70: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  ckpt = torch.load(WEIGHT_FILE, map_location='cpu')
+[DEVICE] Using: cuda
+============================================================
+VRDL Final – Restormer + 8-way TTA Submission
+============================================================
+📦 載入 Restormer 權重: /home/luluboy/projects/vrdl_final/weights/RealDenoising_Restormer.pth
+✅ Restormer 權重載入成功（strict=True）
+
+🧪 驗證 TTA Transform 對稱性...
+Traceback (most recent call last):
+  File "/home/luluboy/projects/vrdl_final/code/tta_infer_restormer.py", line 196, in <module>
+    main()
+    ~~~~^^
+  File "/home/luluboy/projects/vrdl_final/code/tta_infer_restormer.py", line 161, in main
+    test_transform_symmetry(model)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "/home/luluboy/projects/vrdl_final/code/tta_infer_restormer.py", line 139, in test_transform_symmetry
+    out_t = model(t)[0]
+            ~~~~~^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/luluboy/projects/vrdl_final/code/Restormer/basicsr/models/archs/restormer_arch.py", line 273, in forward
+    out_dec_level1 = self.refinement(out_dec_level1)
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/luluboy/projects/vrdl_final/code/Restormer/basicsr/models/archs/restormer_arch.py", line 148, in forward
+    x = x + self.ffn(self.norm2(x))
+            ~~~~~~~~^^^^^^^^^^^^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/luluboy/projects/vrdl_final/code/Restormer/basicsr/models/archs/restormer_arch.py", line 91, in forward
+    x = F.gelu(x1) * x2
+        ~~~~~~~~~~~^~~~
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 64.00 MiB. GPU 0 has a total capacity of 11.62 GiB of which 29.75 MiB is free. Process 5701 has 250.00 MiB memory in use. Process 2534729 has 11.54 MiB memory in use. Including non-PyTorch memory, this process has 10.68 GiB memory in use. Of the allocated memory 10.29 GiB is allocated by PyTorch, and 88.50 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+/home/luluboy/projects/vrdl_final/code/tta_infer_restormer.py:73: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  ckpt = torch.load(WEIGHT_FILE, map_location='cpu')
+[DEVICE] Using: cuda
+============================================================
+VRDL Final – Restormer + 8-way TTA Submission
+============================================================
+📦 載入 Restormer 權重: /home/luluboy/projects/vrdl_final/weights/RealDenoising_Restormer.pth
+✅ Restormer 權重載入成功（strict=True）
+
+🧪 驗證 TTA Transform 對稱性...
+Traceback (most recent call last):
+  File "/home/luluboy/projects/vrdl_final/code/tta_infer_restormer.py", line 214, in <module>
+    main()
+    ~~~~^^
+  File "/home/luluboy/projects/vrdl_final/code/tta_infer_restormer.py", line 179, in main
+    test_transform_symmetry(model)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "/home/luluboy/projects/vrdl_final/code/tta_infer_restormer.py", line 157, in test_transform_symmetry
+    out_t = model(t)[0]
+            ~~~~~^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/luluboy/projects/vrdl_final/code/Restormer/basicsr/models/archs/restormer_arch.py", line 273, in forward
+    out_dec_level1 = self.refinement(out_dec_level1)
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/luluboy/projects/vrdl_final/code/Restormer/basicsr/models/archs/restormer_arch.py", line 147, in forward
+    x = x + self.attn(self.norm1(x))
+            ~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/luluboy/projects/vrdl_final/code/Restormer/basicsr/models/archs/restormer_arch.py", line 114, in forward
+    qkv = self.qkv_dwconv(self.qkv(x))
+                          ~~~~~~~~^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/conv.py", line 554, in forward
+    return self._conv_forward(input, self.weight, self.bias)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/conv.py", line 549, in _conv_forward
+    return F.conv2d(
+           ~~~~~~~~^
+        input, weight, bias, self.stride, self.padding, self.dilation, self.groups
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 72.00 MiB. GPU 0 has a total capacity of 11.62 GiB of which 84.75 MiB is free. Process 5701 has 250.00 MiB memory in use. Process 2534729 has 11.54 MiB memory in use. Including non-PyTorch memory, this process has 10.81 GiB memory in use. Of the allocated memory 10.43 GiB is allocated by PyTorch, and 83.21 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+EXIT:1
+/home/luluboy/projects/vrdl_final/code/tta_infer_restormer.py:73: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  ckpt = torch.load(WEIGHT_FILE, map_location='cpu')
+[DEVICE] Using: cuda
+============================================================
+VRDL Final – Restormer + 8-way TTA Submission
+============================================================
+📦 載入 Restormer 權重: /home/luluboy/projects/vrdl_final/weights/RealDenoising_Restormer.pth
+✅ Restormer 權重載入成功（strict=True）
+
+🧪 驗證 TTA Transform 對稱性...
+Traceback (most recent call last):
+  File "/home/luluboy/projects/vrdl_final/code/tta_infer_restormer.py", line 214, in <module>
+    main()
+    ~~~~^^
+  File "/home/luluboy/projects/vrdl_final/code/tta_infer_restormer.py", line 179, in main
+    test_transform_symmetry(model)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "/home/luluboy/projects/vrdl_final/code/tta_infer_restormer.py", line 157, in test_transform_symmetry
+    out_t = model(t)[0]
+            ~~~~~^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/luluboy/projects/vrdl_final/code/Restormer/basicsr/models/archs/restormer_arch.py", line 273, in forward
+    out_dec_level1 = self.refinement(out_dec_level1)
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/luluboy/projects/vrdl_final/code/Restormer/basicsr/models/archs/restormer_arch.py", line 147, in forward
+    x = x + self.attn(self.norm1(x))
+            ~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/luluboy/projects/vrdl_final/code/Restormer/basicsr/models/archs/restormer_arch.py", line 121, in forward
+    q = torch.nn.functional.normalize(q, dim=-1)
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/functional.py", line 5374, in normalize
+    return input / denom
+           ~~~~~~^~~~~~~
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 24.00 MiB. GPU 0 has a total capacity of 11.62 GiB of which 52.75 MiB is free. Process 2534729 has 11.54 MiB memory in use. Process 1963387 has 250.00 MiB memory in use. Including non-PyTorch memory, this process has 10.84 GiB memory in use. Of the allocated memory 10.52 GiB is allocated by PyTorch, and 14.98 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+EXIT_CODE:1

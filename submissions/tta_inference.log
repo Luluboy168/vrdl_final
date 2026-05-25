@@ -1,0 +1,27 @@
+[DEVICE] Using: cuda
+============================================================
+VRDL Final – NAFNet + 8-way TTA Submission
+============================================================
+
+🧪 驗證 TTA Transform 對稱性...
+   variant: <lambda> → ❌ diff=407376
+   variant: rot90 → ❌ diff=407376
+   variant: rot180 → ❌ diff=407376
+   variant: rot270 → ❌ diff=407376
+   variant: hflip → ❌ diff=407376
+   variant: <lambda> → ❌ diff=407376
+   variant: <lambda> → ❌ diff=407376
+   variant: <lambda> → ❌ diff=407376
+✅ Transform 對稱性測試完成
+
+📂 讀取 /home/luluboy/projects/vrdl_final/data/BenchmarkNoisyBlocksSrgb.mat ...
+   shape: (40, 32, 256, 256, 3) → 40×32=1280 blocks
+
+🔁 開始 TTA 推論 1280 個 blocks (×8 variants × 1280 blocks = 10240 forward passes)...
+
+✅ 已儲存: /home/luluboy/projects/vrdl_final/submissions/SubmitSrgb_nafnet_tta8.csv (335.6 MB, 1280 rows)
+
+📋 下一步：
+  1. 前往 https://www.kaggle.com/competitions/sidd-benchmark-srgb-psnr/submit
+  2. 上傳 /home/luluboy/projects/vrdl_final/submissions/SubmitSrgb_nafnet_tta8.csv
+  3. 預期 PSNR ≈ 40.35-40.45 (較 baseline +0.05~0.10 dB)

@@ -1,0 +1,45 @@
+# Data — too large for GitHub
+data/
+
+# Model weights
+weights/*.pth
+!weights/README.md
+
+# Checkpoints
+checkpoints/*.pth
+!checkpoints/README.md
+
+# Logs
+logs/*.log
+logs/*.txt
+
+# Submissions — keep structure, not the CSV files
+submissions/*.csv
+
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+dist/
+build/
+
+# Environment
+.env
+venv/
+env/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Jupyter
+*.ipynb_checkpoints/
+
+# IDE
+.vscode/
+.idea/
+
+# Large files - not needed in repo
+swinir_model/swinir_dn.pth
+submissions/ensemble_results/ensemble_alpha_*.csv
+submissions/ensemble_results/SubmitSrgb_*.csv

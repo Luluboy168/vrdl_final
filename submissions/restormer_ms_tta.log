@@ -1,0 +1,184 @@
+[DEVICE] Using: cuda
+============================================================
+Restormer-FT + Multi-Scale 8-way TTA Inference
+Scales: [0.9, 1.0, 1.1], TTA: 8-way
+============================================================
+Loading Restormer-FT weights from: /home/luluboy/projects/vrdl_final/checkpoints/restormer_ft_final.pth
+Traceback (most recent call last):
+  File "/home/luluboy/projects/vrdl_final/code/tta_ms_restormer_ft.py", line 223, in <module>
+    main()
+    ~~~~^^
+  File "/home/luluboy/projects/vrdl_final/code/tta_ms_restormer_ft.py", line 145, in main
+    model = build_model()
+  File "/home/luluboy/projects/vrdl_final/code/tta_ms_restormer_ft.py", line 73, in build_model
+    model.to(DEVICE)
+    ~~~~~~~~^^^^^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1340, in to
+    return self._apply(convert)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 900, in _apply
+    module._apply(fn)
+    ~~~~~~~~~~~~~^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 900, in _apply
+    module._apply(fn)
+    ~~~~~~~~~~~~~^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 927, in _apply
+    param_applied = fn(param)
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1326, in convert
+    return t.to(
+           ~~~~^
+        device,
+        ^^^^^^^
+        dtype if t.is_floating_point() or t.is_complex() else None,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        non_blocking,
+        ^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/cuda/__init__.py", line 319, in _lazy_init
+    torch._C._cuda_init()
+    ~~~~~~~~~~~~~~~~~~~^^
+RuntimeError: Unrecognized CachingAllocator option: max_split_size_mb=512
+[DEVICE] Using: cuda
+============================================================
+Restormer-FT + Multi-Scale 8-way TTA Inference
+Scales: [0.9, 1.0, 1.1], TTA: 8-way
+============================================================
+Loading Restormer-FT weights from: /home/luluboy/projects/vrdl_final/checkpoints/restormer_ft_final.pth
+Traceback (most recent call last):
+  File "/home/luluboy/projects/vrdl_final/code/tta_ms_restormer_ft.py", line 223, in <module>
+    main()
+    ~~~~^^
+  File "/home/luluboy/projects/vrdl_final/code/tta_ms_restormer_ft.py", line 145, in main
+    model = build_model()
+  File "/home/luluboy/projects/vrdl_final/code/tta_ms_restormer_ft.py", line 73, in build_model
+    model.to(DEVICE)
+    ~~~~~~~~^^^^^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1340, in to
+    return self._apply(convert)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 900, in _apply
+    module._apply(fn)
+    ~~~~~~~~~~~~~^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 900, in _apply
+    module._apply(fn)
+    ~~~~~~~~~~~~~^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 927, in _apply
+    param_applied = fn(param)
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1326, in convert
+    return t.to(
+           ~~~~^
+        device,
+        ^^^^^^^
+        dtype if t.is_floating_point() or t.is_complex() else None,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        non_blocking,
+        ^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/cuda/__init__.py", line 319, in _lazy_init
+    torch._C._cuda_init()
+    ~~~~~~~~~~~~~~~~~~~^^
+RuntimeError: Unrecognized CachingAllocator option: max_split_size_mb=512
+[DEVICE] Using: cuda
+============================================================
+Restormer-FT + Multi-Scale 8-way TTA Inference
+Scales: [0.9, 1.0, 1.1], TTA: 8-way
+============================================================
+Loading Restormer-FT weights from: /home/luluboy/projects/vrdl_final/checkpoints/restormer_ft_final.pth
+Model loaded successfully (FP32)
+Running sanity check...
+  Sanity OK. Peak: 6.075GB
+Loading data from /home/luluboy/projects/vrdl_final/data/BenchmarkNoisyBlocksSrgb.mat...
+  Shape: (40, 32, 256, 256, 3) -> 1280 blocks
+Estimating speed...
+Traceback (most recent call last):
+  File "/home/luluboy/projects/vrdl_final/code/tta_ms_restormer_ft.py", line 223, in <module>
+    main()
+    ~~~~^^
+  File "/home/luluboy/projects/vrdl_final/code/tta_ms_restormer_ft.py", line 175, in main
+    _ = run_ms_tta_block(model, block)
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+    return func(*args, **kwargs)
+  File "/home/luluboy/projects/vrdl_final/code/tta_ms_restormer_ft.py", line 111, in run_ms_tta_block
+    out = model(t)
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/luluboy/projects/vrdl_final/code/Restormer/basicsr/models/archs/restormer_arch.py", line 253, in forward
+    inp_enc_level3 = self.down2_3(out_enc_level2)
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/luluboy/projects/vrdl_final/code/Restormer/basicsr/models/archs/restormer_arch.py", line 179, in forward
+    return self.body(x)
+           ~~~~~~~~~^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/pixelshuffle.py", line 112, in forward
+    return F.pixel_unshuffle(input, self.downscale_factor)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: pixel_unshuffle expects height to be divisible by downscale_factor, but input.size(-2)=115 is not divisible by 2
+DONE
+[DEVICE] Using: cuda
+============================================================
+Restormer-FT + Multi-Scale 8-way TTA Inference
+Scales: [0.875, 1.0, 1.125], TTA: 8-way
+============================================================
+Loading Restormer-FT weights from: /home/luluboy/projects/vrdl_final/checkpoints/restormer_ft_final.pth
+Model loaded successfully (FP32)
+Running sanity check...
+  Sanity OK. Peak: 6.075GB
+Loading data from /home/luluboy/projects/vrdl_final/data/BenchmarkNoisyBlocksSrgb.mat...
+  Shape: (40, 32, 256, 256, 3) -> 1280 blocks
+Estimating speed...
+  ~1.4s/block, estimated total: 29.3 min
+
+Running multi-scale TTA inference on 1280 blocks...
+  [50/1280] elapsed=1.3min eta=31.0min peak=0.56GB
+  [100/1280] elapsed=2.4min eta=28.0min peak=0.56GB
+  [150/1280] elapsed=3.5min eta=26.2min peak=0.56GB
+  [200/1280] elapsed=4.6min eta=24.8min peak=0.56GB
+  [250/1280] elapsed=5.7min eta=23.5min peak=0.56GB
+  [300/1280] elapsed=6.8min eta=22.3min peak=0.56GB
+  [350/1280] elapsed=7.9min eta=21.1min peak=0.56GB
+  [400/1280] elapsed=9.0min eta=19.9min peak=0.56GB
+  [450/1280] elapsed=10.1min eta=18.7min peak=0.56GB
+  [500/1280] elapsed=11.3min eta=17.6min peak=0.56GB
+  [550/1280] elapsed=12.4min eta=16.4min peak=0.56GB
+  [600/1280] elapsed=13.5min eta=15.3min peak=0.56GB
+  [650/1280] elapsed=14.6min eta=14.1min peak=0.56GB
+  [700/1280] elapsed=15.7min eta=13.0min peak=0.56GB
+  [750/1280] elapsed=16.8min eta=11.9min peak=0.56GB
+  [800/1280] elapsed=17.9min eta=10.8min peak=0.56GB
+  [850/1280] elapsed=19.0min eta=9.6min peak=0.56GB
+  [900/1280] elapsed=20.1min eta=8.5min peak=0.56GB
+  [950/1280] elapsed=21.3min eta=7.4min peak=0.56GB
+  [1000/1280] elapsed=22.4min eta=6.3min peak=0.56GB
+  [1050/1280] elapsed=23.5min eta=5.1min peak=0.56GB
+  [1100/1280] elapsed=24.6min eta=4.0min peak=0.56GB
+  [1150/1280] elapsed=25.7min eta=2.9min peak=0.56GB
+  [1200/1280] elapsed=26.8min eta=1.8min peak=0.56GB
+  [1250/1280] elapsed=27.9min eta=0.7min peak=0.56GB
+  [1280/1280] elapsed=28.6min eta=0.0min peak=0.56GB
+
+✅ Done! Saved /home/luluboy/projects/vrdl_final/submissions/SubmitSrgb_restormer_ft_ms_tta.csv (335.6 MB, 1280 rows)
+   Total time: 28.7 min, Peak GPU: 0.557 GB
+Validating format...
+   First BLOCK length: 262144 (expected 262144)
+   ✅ Format check PASSED
+EXIT:0

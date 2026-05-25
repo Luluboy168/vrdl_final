@@ -1,0 +1,34 @@
+/home/luluboy/miniconda3/lib/python3.13/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/functional.py:505: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at /pytorch/aten/src/ATen/native/TensorShape.cpp:4382.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+Device: cuda
+Loading SwinIR weights from /home/luluboy/projects/vrdl_final/swinir_model/swinir_dn.pth
+SwinIR model loaded successfully
+Loading /home/luluboy/projects/vrdl_final/data/BenchmarkNoisyBlocksSrgb.mat...
+  Shape: (40, 32, 256, 256, 3), dtype: uint8
+Processing 1280 blocks...
+  Processed 100/1280 (51.3s)
+  Processed 200/1280 (102.0s)
+  Processed 300/1280 (152.8s)
+  Processed 400/1280 (203.8s)
+  Processed 500/1280 (256.3s)
+  Processed 600/1280 (308.9s)
+  Processed 700/1280 (361.9s)
+  Processed 800/1280 (413.9s)
+  Processed 900/1280 (466.4s)
+  Processed 1000/1280 (518.1s)
+  Processed 1100/1280 (569.1s)
+  Processed 1200/1280 (620.8s)
+Done inference. Total time: 662.5s
+Building submission CSV...
+Validating CSV...
+  Columns OK: True
+  IDs OK: True
+  Block sizes OK: True
+  File size: 335.6 MB
+  Block 0 b64 len: 262144
+  Block 639 b64 len: 262144
+  Block 1279 b64 len: 262144
+Output written to /home/luluboy/projects/vrdl_final/submissions/SubmitSrgb_swinir.csv
+Total time: 669.3s

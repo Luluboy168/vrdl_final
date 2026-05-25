@@ -1,0 +1,58 @@
+Loading CSVs...
+NAF: 1280 rows, REST: 1280 rows
+Decoding NAFNet blocks...
+Decoding Restormer-FT blocks...
+NAF: (1280, 256, 256, 3), REST: (1280, 256, 256, 3)
+
+Testing 32 alphas around the best known value (0.72)...
+  alpha=0.700  psnr_vs_NAF=53.429  psnr_vs_REST=46.700
+  alpha=0.702  psnr_vs_NAF=53.671  psnr_vs_REST=46.585
+  alpha=0.704  psnr_vs_NAF=53.671  psnr_vs_REST=46.585
+  alpha=0.706  psnr_vs_NAF=53.672  psnr_vs_REST=46.584
+  alpha=0.708  psnr_vs_NAF=53.672  psnr_vs_REST=46.584
+  alpha=0.710  psnr_vs_NAF=53.692  psnr_vs_REST=46.575
+  alpha=0.712  psnr_vs_NAF=53.694  psnr_vs_REST=46.574
+  alpha=0.714  psnr_vs_NAF=53.694  psnr_vs_REST=46.574
+  alpha=0.716  psnr_vs_NAF=53.694  psnr_vs_REST=46.574
+  alpha=0.718  psnr_vs_NAF=53.695  psnr_vs_REST=46.573
+  alpha=0.720  psnr_vs_NAF=53.700  psnr_vs_REST=46.571
+  alpha=0.722  psnr_vs_NAF=53.700  psnr_vs_REST=46.571
+  alpha=0.724  psnr_vs_NAF=53.770  psnr_vs_REST=46.536
+  alpha=0.726  psnr_vs_NAF=53.771  psnr_vs_REST=46.536
+  alpha=0.728  psnr_vs_NAF=53.771  psnr_vs_REST=46.536
+  alpha=0.730  psnr_vs_NAF=53.771  psnr_vs_REST=46.535
+  alpha=0.732  psnr_vs_NAF=53.785  psnr_vs_REST=46.529
+  alpha=0.734  psnr_vs_NAF=53.785  psnr_vs_REST=46.529
+  alpha=0.736  psnr_vs_NAF=53.788  psnr_vs_REST=46.527
+  alpha=0.738  psnr_vs_NAF=53.788  psnr_vs_REST=46.527
+  alpha=0.740  psnr_vs_NAF=53.789  psnr_vs_REST=46.526
+  alpha=0.742  psnr_vs_NAF=53.789  psnr_vs_REST=46.526
+  alpha=0.744  psnr_vs_NAF=53.789  psnr_vs_REST=46.526
+  alpha=0.746  psnr_vs_NAF=53.789  psnr_vs_REST=46.526
+  alpha=0.748  psnr_vs_NAF=53.789  psnr_vs_REST=46.526
+  alpha=0.750  psnr_vs_NAF=55.177  psnr_vs_REST=45.904
+  alpha=0.752  psnr_vs_NAF=57.232  psnr_vs_REST=45.359
+  alpha=0.754  psnr_vs_NAF=57.232  psnr_vs_REST=45.359
+  alpha=0.756  psnr_vs_NAF=57.232  psnr_vs_REST=45.359
+  alpha=0.758  psnr_vs_NAF=57.232  psnr_vs_REST=45.359
+  alpha=0.760  psnr_vs_NAF=57.233  psnr_vs_REST=45.359
+  alpha=0.762  psnr_vs_NAF=57.234  psnr_vs_REST=45.358
+
+Broader alpha test (for reference):
+  alpha=0.680  psnr_vs_NAF=53.061
+  alpha=0.780  psnr_vs_NAF=57.309
+
+Top alphas (by psnr_vs_NAF):
+  alpha=0.780  psnr_vs_NAF=57.309
+  alpha=0.762  psnr_vs_NAF=57.234
+  alpha=0.760  psnr_vs_NAF=57.233
+  alpha=0.758  psnr_vs_NAF=57.232
+  alpha=0.752  psnr_vs_NAF=57.232
+
+Generating CSVs for alpha=0.720 and alpha=0.730...
+  ✅ /home/luluboy/projects/vrdl_final/submissions/SubmitSrgb_2model_ftsearch_0.720.csv (320.0MB)
+  ✅ /home/luluboy/projects/vrdl_final/submissions/SubmitSrgb_2model_ftsearch_0.730.csv (320.0MB)
+
+All done!
+NOTE: This local metric measures similarity to NAFNet, NOT Kaggle PSNR.
+Known Kaggle results: α=0.72→40.4816, α=0.74→40.4455, α=0.68→40.4467, α=0.80→40.4284

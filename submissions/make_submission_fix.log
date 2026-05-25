@@ -1,0 +1,21 @@
+============================================================
+VRDL Final – NAFNet Baseline Submission
+============================================================
+✅ /home/luluboy/projects/vrdl_final/data/BenchmarkNoisyBlocksSrgb.mat 已存在 (231.8 MB)，略過下載。
+📦 載入權重: /home/luluboy/projects/vrdl_final/weights/NAFNet-SIDD-width64.pth
+✅ 模型權重載入成功 (strict=True)
+
+📂 讀取 /home/luluboy/projects/vrdl_final/data/BenchmarkNoisyBlocksSrgb.mat ...
+   shape: (40, 32, 256, 256, 3), dtype: uint8
+   共 40×32=1280 blocks (預期 40×32=1280)
+
+🔁 開始推論 1280 個 blocks ...
+
+✅ 已儲存: /home/luluboy/projects/vrdl_final/submissions/SubmitSrgb_baseline.csv
+   列數: 1280, 檔案大小: 96.2 MB
+
+📋 下一步：
+  1. 前往 https://www.kaggle.com/competitions/sidd-benchmark-srgb-psnr/submit
+  2. 上傳 /home/luluboy/projects/vrdl_final/submissions/SubmitSrgb_baseline.csv
+  3. 預期 PSNR ≈ 40.30 (金牌門檻)
+EXIT:0

@@ -1,0 +1,82 @@
+[DEVICE] Using: cuda
+============================================================
+Restormer + 8-way TTA Inference
+============================================================
+Loading Restormer weights from: /home/luluboy/projects/vrdl_final/checkpoints/restormer_ft_final.pth
+Traceback (most recent call last):
+  File "/home/luluboy/projects/vrdl_final/code/tta_infer_restormer_ft.py", line 190, in <module>
+    main()
+    ~~~~^^
+  File "/home/luluboy/projects/vrdl_final/code/tta_infer_restormer_ft.py", line 114, in main
+    model = build_model()
+  File "/home/luluboy/projects/vrdl_final/code/tta_infer_restormer_ft.py", line 49, in build_model
+    model.to(DEVICE)
+    ~~~~~~~~^^^^^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1383, in to
+    return self._apply(convert)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 933, in _apply
+    module._apply(fn)
+    ~~~~~~~~~~~~~^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 933, in _apply
+    module._apply(fn)
+    ~~~~~~~~~~~~~^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 964, in _apply
+    param_applied = fn(param)
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1369, in convert
+    return t.to(
+           ~~~~^
+        device,
+        ^^^^^^^
+        dtype if t.is_floating_point() or t.is_complex() else None,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        non_blocking,
+        ^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/cuda/__init__.py", line 491, in _lazy_init
+    torch._C._cuda_init()
+    ~~~~~~~~~~~~~~~~~~~^^
+RuntimeError: Unexpected error from cudaGetDeviceCount(). Did you run some cuda functions before calling NumCudaDevices() that might have already set an error? Error 804: forward compatibility was attempted on non supported HW
+/home/luluboy/projects/vrdl_final/code/tta_infer_restormer_ft.py:46: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  ckpt = torch.load(WEIGHT_FILE, map_location='cpu')
+[DEVICE] Using: cuda
+============================================================
+Restormer + 8-way TTA Inference
+============================================================
+Loading Restormer weights from: /home/luluboy/projects/vrdl_final/checkpoints/restormer_ft_final.pth
+Traceback (most recent call last):
+  File "/home/luluboy/projects/vrdl_final/code/tta_infer_restormer_ft.py", line 190, in <module>
+    main()
+    ~~~~^^
+  File "/home/luluboy/projects/vrdl_final/code/tta_infer_restormer_ft.py", line 114, in main
+    model = build_model()
+  File "/home/luluboy/projects/vrdl_final/code/tta_infer_restormer_ft.py", line 49, in build_model
+    model.to(DEVICE)
+    ~~~~~~~~^^^^^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1340, in to
+    return self._apply(convert)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 900, in _apply
+    module._apply(fn)
+    ~~~~~~~~~~~~~^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 900, in _apply
+    module._apply(fn)
+    ~~~~~~~~~~~~~^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 927, in _apply
+    param_applied = fn(param)
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1326, in convert
+    return t.to(
+           ~~~~^
+        device,
+        ^^^^^^^
+        dtype if t.is_floating_point() or t.is_complex() else None,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        non_blocking,
+        ^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/cuda/__init__.py", line 319, in _lazy_init
+    torch._C._cuda_init()
+    ~~~~~~~~~~~~~~~~~~~^^
+RuntimeError: Unexpected error from cudaGetDeviceCount(). Did you run some cuda functions before calling NumCudaDevices() that might have already set an error? Error 804: forward compatibility was attempted on non supported HW

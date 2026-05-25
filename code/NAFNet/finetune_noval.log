@@ -1,0 +1,220 @@
+Disable distributed.
+Path already exists. Rename it to /home/luluboy/projects/vrdl_final/code/NAFNet/experiments/NAFNet-SIDD-finetune-width64-8k_archived_20260520_103113
+2026-05-20 10:31:13,656 INFO: 
+                ____                _       _____  ____
+               / __ ) ____ _ _____ (_)_____/ ___/ / __ \
+              / __  |/ __ `// ___// // ___/\__ \ / /_/ /
+             / /_/ // /_/ /(__  )/ // /__ ___/ // _, _/
+            /_____/ \__,_//____//_/ \___//____//_/ |_|
+     ______                   __   __                 __      __
+    / ____/____   ____   ____/ /  / /   __  __ _____ / /__   / /
+   / / __ / __ \ / __ \ / __  /  / /   / / / // ___// //_/  / /
+  / /_/ // /_/ // /_/ // /_/ /  / /___/ /_/ // /__ / /<    /_/
+  \____/ \____/ \____/ \____/  /_____/\____/ \___//_/|_|  (_)
+    
+Version Information: 
+	BasicSR: 1.2.0+386ca20
+	PyTorch: 2.12.0+cu130
+	TorchVision: 0.27.0+cu130
+2026-05-20 10:31:13,656 INFO: 
+  name: NAFNet-SIDD-finetune-width64-8k
+  model_type: ImageRestorationModel
+  scale: 1
+  num_gpu: 1
+  manual_seed: 10
+  datasets:[
+    train:[
+      name: SIDD-Finetune-Train
+      type: PairedImageDataset
+      dataroot_gt: ./datasets/SIDD/train/gt
+      dataroot_lq: ./datasets/SIDD/train/lq
+      filename_tmpl: {}
+      io_backend:[
+        type: disk
+      ]
+      gt_size: 256
+      use_flip: True
+      use_rot: True
+      use_shuffle: True
+      num_worker_per_gpu: 4
+      batch_size_per_gpu: 1
+      dataset_enlarge_ratio: 10
+      prefetch_mode: None
+      mean: [0, 0, 0]
+      std: [1, 1, 1]
+      phase: train
+      scale: 1
+    ]
+    val:[
+      name: SIDD-Finetune-Val
+      type: PairedImageDataset
+      dataroot_gt: ./datasets/SIDD/val/gt
+      dataroot_lq: ./datasets/SIDD/val/lq
+      filename_tmpl: {}
+      io_backend:[
+        type: disk
+      ]
+      phase: val
+      scale: 1
+    ]
+  ]
+  network_g:[
+    type: NAFNet
+    width: 64
+    enc_blk_nums: [2, 2, 4, 8]
+    middle_blk_num: 12
+    dec_blk_nums: [2, 2, 2, 2]
+  ]
+  path:[
+    pretrain_network_g: ./experiments/pretrained_models/NAFNet-SIDD-width64.pth
+    strict_load_g: True
+    resume_state: None
+    root: /home/luluboy/projects/vrdl_final/code/NAFNet
+    experiments_root: /home/luluboy/projects/vrdl_final/code/NAFNet/experiments/NAFNet-SIDD-finetune-width64-8k
+    models: /home/luluboy/projects/vrdl_final/code/NAFNet/experiments/NAFNet-SIDD-finetune-width64-8k/models
+    training_states: /home/luluboy/projects/vrdl_final/code/NAFNet/experiments/NAFNet-SIDD-finetune-width64-8k/training_states
+    log: /home/luluboy/projects/vrdl_final/code/NAFNet/experiments/NAFNet-SIDD-finetune-width64-8k
+    visualization: /home/luluboy/projects/vrdl_final/code/NAFNet/experiments/NAFNet-SIDD-finetune-width64-8k/visualization
+  ]
+  train:[
+    optim_g:[
+      type: AdamW
+      lr: 5e-05
+      weight_decay: 0.0
+      betas: [0.9, 0.999]
+    ]
+    scheduler:[
+      type: TrueCosineAnnealingLR
+      T_max: 20000
+      eta_min: 1e-06
+    ]
+    total_iter: 20000
+    warmup_iter: 500
+    pixel_opt:[
+      type: PSNRLoss
+      loss_weight: 1.0
+      reduction: mean
+    ]
+    use_amp: True
+  ]
+  val:[
+    val_freq: 999999
+    save_img: False
+    use_image: False
+    metrics:[
+      psnr:[
+        type: calculate_psnr
+        crop_border: 0
+        test_y_channel: False
+      ]
+    ]
+  ]
+  logger:[
+    print_freq: 100
+    save_checkpoint_freq: 2000.0
+    use_tb_logger: False
+    wandb:[
+      project: None
+      resume_id: None
+    ]
+  ]
+  dist_params:[
+    backend: nccl
+    port: 29500
+  ]
+  evaluation:[
+    freq: 0
+    save_path: ./results/finetune_val
+  ]
+  is_train: True
+  dist: False
+  rank: 0
+  world_size: 1
+
+2026-05-20 10:31:13,666 INFO: Dataset PairedImageDataset - SIDD-Finetune-Train is created.
+2026-05-20 10:31:13,666 INFO: Training statistics:
+	Number of train images: 288
+	Dataset enlarge ratio: 10
+	Batch size per gpu: 1
+	World size (gpu number): 1
+	Require iter number per epoch: 2880
+	Total epochs: 7; iters: 20000.
+2026-05-20 10:31:13,667 INFO: Dataset PairedImageDataset - SIDD-Finetune-Val is created.
+2026-05-20 10:31:13,667 INFO: Number of val images/folders in SIDD-Finetune-Val: 32
+2026-05-20 10:31:14,399 INFO: Loading NAFNet model from ./experiments/pretrained_models/NAFNet-SIDD-width64.pth.
+2026-05-20 10:31:14,772 INFO: Model [ImageRestorationModel] is created.
+ load net keys <built-in method keys of collections.OrderedDict object at 0x742d6c6b0840>
+.. cosineannealingLR
+2026-05-20 10:31:14,816 INFO: Start training from epoch: 0, iter: 0
+2026-05-20 10:31:33,644 INFO: [NAFNe..][epoch:  0, iter:     100, lr:(1.000e-05,)] [eta: 1:01:58, time (data): 0.089 (0.000)] l_pix: -4.1952e+01 
+2026-05-20 10:31:47,970 INFO: [NAFNe..][epoch:  0, iter:     200, lr:(2.000e-05,)] [eta: 0:54:30, time (data): 0.095 (0.002)] l_pix: -3.6596e+01 
+2026-05-20 10:32:02,691 INFO: [NAFNe..][epoch:  0, iter:     300, lr:(3.000e-05,)] [eta: 0:52:16, time (data): 0.097 (0.000)] l_pix: -4.1403e+01 
+2026-05-20 10:32:17,975 INFO: [NAFNe..][epoch:  0, iter:     400, lr:(4.000e-05,)] [eta: 0:51:29, time (data): 0.101 (0.000)] l_pix: -4.3755e+01 
+2026-05-20 10:32:32,803 INFO: [NAFNe..][epoch:  0, iter:     500, lr:(4.990e-05,)] [eta: 0:50:36, time (data): 0.101 (0.000)] l_pix: -4.1178e+01 
+2026-05-20 10:32:48,252 INFO: [NAFNe..][epoch:  0, iter:     600, lr:(4.987e-05,)] [eta: 0:50:17, time (data): 0.350 (0.262)] l_pix: -4.0116e+01 
+2026-05-20 10:33:03,060 INFO: [NAFNe..][epoch:  0, iter:     700, lr:(4.983e-05,)] [eta: 0:49:41, time (data): 0.140 (0.010)] l_pix: -4.4898e+01 
+2026-05-20 10:33:18,005 INFO: [NAFNe..][epoch:  0, iter:     800, lr:(4.978e-05,)] [eta: 0:49:13, time (data): 0.093 (0.001)] l_pix: -3.5815e+01 
+2026-05-20 10:33:33,240 INFO: [NAFNe..][epoch:  0, iter:     900, lr:(4.973e-05,)] [eta: 0:48:55, time (data): 0.290 (0.201)] l_pix: -4.2677e+01 
+2026-05-20 10:33:48,803 INFO: [NAFNe..][epoch:  0, iter:   1,000, lr:(4.967e-05,)] [eta: 0:48:43, time (data): 0.090 (0.000)] l_pix: -3.4394e+01 
+2026-05-20 10:33:48,804 WARNING: nondist_validation is not implemented. Run dist_validation.
+  0%|          | 0/32 [00:00<?, ?image/s]Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/luluboy/projects/vrdl_final/code/NAFNet/basicsr/train.py", line 305, in <module>
+    main()
+    ~~~~^^
+  File "/home/luluboy/projects/vrdl_final/code/NAFNet/basicsr/train.py", line 270, in main
+    model.validation(val_loader, current_iter, tb_logger,
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                     opt['val']['save_img'], rgb2bgr, use_image )
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luluboy/projects/vrdl_final/code/NAFNet/basicsr/models/base_model.py", line 57, in validation
+    return self.nondist_validation(dataloader, current_iter, tb_logger,
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                            save_img, rgb2bgr, use_image)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luluboy/projects/vrdl_final/code/NAFNet/basicsr/models/image_restoration_model.py", line 385, in nondist_validation
+    self.dist_validation(*args, **kwargs)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/luluboy/projects/vrdl_final/code/NAFNet/basicsr/models/image_restoration_model.py", line 281, in dist_validation
+    self.test()
+    ~~~~~~~~~^^
+  File "/home/luluboy/projects/vrdl_final/code/NAFNet/basicsr/models/image_restoration_model.py", line 247, in test
+    pred = self.net_g(self.lq[i:j])
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/luluboy/projects/vrdl_final/code/NAFNet/basicsr/models/archs/NAFNet_arch.py", line 141, in forward
+    x = encoder(x)
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/container.py", line 253, in forward
+    input = module(input)
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/luluboy/projects/vrdl_final/code/NAFNet/basicsr/models/archs/NAFNet_arch.py", line 62, in forward
+    x = self.norm1(x)
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/luluboy/projects/vrdl_final/code/NAFNet/basicsr/models/archs/arch_util.py", line 300, in forward
+    return LayerNormFunction.apply(x, self.weight, self.bias, self.eps)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luluboy/miniconda3/lib/python3.13/site-packages/torch/autograd/function.py", line 596, in apply
+    return super().apply(*args, **kwargs)  # type: ignore[misc]
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/luluboy/projects/vrdl_final/code/NAFNet/basicsr/models/archs/arch_util.py", line 271, in forward
+    var = (x - mu).pow(2).mean(1, keepdim=True)
+          ~~~~~~~~~~~~^^^
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 3.13 GiB. GPU 0 has a total capacity of 11.62 GiB of which 1.68 GiB is free. Process 3372319 has 11.54 MiB memory in use. Process 3372339 has 250.00 MiB memory in use. Including non-PyTorch memory, this process has 8.99 GiB memory in use. Of the allocated memory 8.48 GiB is allocated by PyTorch, and 218.62 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)
+  0%|          | 0/32 [00:01<?, ?image/s]

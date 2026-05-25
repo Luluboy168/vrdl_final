@@ -1,0 +1,21 @@
+Building CGNet model...
+CGNet loaded. Missing=0, Unexpected=0
+Loading test data from /home/luluboy/projects/vrdl_final/data/BenchmarkNoisyBlocksSrgb.mat...
+inputs shape: (40, 32, 256, 256, 3), dtype: uint8
+Running CGNet inference on 1280 blocks with 8-way TTA...
+/home/luluboy/projects/vrdl_final/code/infer_cgnet_tta8.py:84: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.no_grad(), torch.cuda.amp.autocast():
+  Processed 128/1280 blocks
+  Processed 256/1280 blocks
+  Processed 384/1280 blocks
+  Processed 512/1280 blocks
+  Processed 640/1280 blocks
+  Processed 768/1280 blocks
+  Processed 896/1280 blocks
+  Processed 1024/1280 blocks
+  Processed 1152/1280 blocks
+  Processed 1280/1280 blocks
+Creating submission CSV...
+Saved: /home/luluboy/projects/vrdl_final/submissions/SubmitSrgb_cgnet_tta8.csv
+✅ CSV valid: 1280 rows, each b64=262144 chars
+CGNET_INFER_DONE

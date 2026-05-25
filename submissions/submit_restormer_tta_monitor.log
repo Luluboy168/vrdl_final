@@ -1,0 +1,22 @@
+=== Restormer TTA v2 ===
+[waiting...] SubmitSrgb_restormer_tta8.csv not found yet, retrying in 15s
+[waiting...] SubmitSrgb_restormer_tta8.csv not found yet, retrying in 15s
+[waiting...] SubmitSrgb_restormer_tta8.csv not found yet, retrying in 15s
+[waiting...] SubmitSrgb_restormer_tta8.csv not found yet, retrying in 15s
+[waiting...] SubmitSrgb_restormer_tta8.csv not found yet, retrying in 15s
+[waiting...] SubmitSrgb_restormer_tta8.csv not found yet, retrying in 15s
+[waiting...] SubmitSrgb_restormer_tta8.csv not found yet, retrying in 15s
+[waiting...] SubmitSrgb_restormer_tta8.csv not found yet, retrying in 15s
+[waiting...] SubmitSrgb_restormer_tta8.csv not found yet, retrying in 15s
+[waiting...] SubmitSrgb_restormer_tta8.csv not found yet, retrying in 15s
+[waiting...] SubmitSrgb_restormer_tta8.csv not found yet, retrying in 15s
+[OK] SubmitSrgb_restormer_tta8.csv exists (335,550,902 bytes)
+  Columns: ['ID', 'BLOCK']
+Traceback (most recent call last):
+  File "/home/luluboy/projects/vrdl_final/code/submit_restormer_tta.py", line 61, in <module>
+    validate_csv(v2_csv)
+    ~~~~~~~~~~~~^^^^^^^^
+  File "/home/luluboy/projects/vrdl_final/code/submit_restormer_tta.py", line 27, in validate_csv
+    assert ids == list(range(1280)), f"ID range wrong: {min(ids)}-{max(ids)}"
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ID range wrong: 1-1280

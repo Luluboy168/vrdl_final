@@ -1,0 +1,12 @@
+Building CGNet model...
+CGNet loaded. Missing=0, Unexpected=0
+Loading test data from /home/luluboy/projects/vrdl_final/data/BenchmarkNoisyBlocksSrgb.mat...
+Traceback (most recent call last):
+  File "/home/luluboy/projects/vrdl_final/code/infer_cgnet_tta8.py", line 134, in <module>
+    main()
+    ~~~~^^
+  File "/home/luluboy/projects/vrdl_final/code/infer_cgnet_tta8.py", line 73, in main
+    inputs = mat['BenchmarkNoisyBlocks']
+             ~~~^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'BenchmarkNoisyBlocks'
+CGNET_INFER_DONE

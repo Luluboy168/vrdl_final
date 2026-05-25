@@ -1,0 +1,17 @@
+Device: cuda
+📂 讀取 /home/luluboy/projects/vrdl_final/data/BenchmarkNoisyBlocksSrgb.mat ...
+   shape: (40, 32, 256, 256, 3)
+📦 載入 fine-tuned 權重: /home/luluboy/projects/vrdl_final/checkpoints/restormer_ft_final.pth
+Loaded. Missing: 0, Unexpected: 0
+🔄 開始 fine-tuned Restormer 推論 (1280 blocks)...
+   [200/1280] done
+   [400/1280] done
+   [600/1280] done
+   [800/1280] done
+   [1000/1280] done
+   [1200/1280] done
+   [1280/1280] done
+💾 寫入 /home/luluboy/projects/vrdl_final/submissions/SubmitSrgb_restormer_ft.csv ...
+✅ CSV (335.6 MB), 1280 rows
+   First BLOCK length: 262144 (expected 262144)
+✅ Format check PASSED

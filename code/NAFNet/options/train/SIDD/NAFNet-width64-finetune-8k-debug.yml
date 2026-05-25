@@ -1,0 +1,103 @@
+name: NAFNet-SIDD-finetune-width64-8k-debug
+model_type: ImageRestorationModel
+scale: 1
+num_gpu: 1
+manual_seed: 10
+
+datasets:
+  train:
+    name: SIDD-Finetune-Train
+    type: PairedImageDataset
+    dataroot_gt: ./datasets/SIDD/train/gt
+    dataroot_lq: ./datasets/SIDD/train/lq
+    filename_tmpl: "{}"
+    io_backend:
+      type: disk
+    gt_size: 256
+    use_flip: True
+    use_rot: True
+    use_shuffle: True
+    num_worker_per_gpu: 0
+    batch_size_per_gpu: 1
+    dataset_enlarge_ratio: 10
+    prefetch_mode: null
+    mean: [0, 0, 0]
+    std: [1, 1, 1]
+    phase: train
+    scale: 1
+  val:
+    name: SIDD-Finetune-Val
+    type: PairedImageDataset
+    dataroot_gt: ./datasets/SIDD/val/gt
+    dataroot_lq: ./datasets/SIDD/val/lq
+    io_backend:
+      type: disk
+    phase: val
+    scale: 1
+
+network_g:
+  type: NAFNet
+  width: 64
+  enc_blk_nums: [2, 2, 4, 8]
+  middle_blk_num: 12
+  dec_blk_nums: [2, 2, 2, 2]
+
+path:
+  pretrain_network_g: ./experiments/pretrained_models/NAFNet-SIDD-width64.pth
+  strict_load_g: True
+  resume_state: null
+  root: /home/luluboy/projects/vrdl_final/code/NAFNet
+  experiments_root: /home/luluboy/projects/vrdl_final/code/NAFNet/experiments/NAFNet-SIDD-finetune-width64-8k-debug
+  models: /home/luluboy/projects/vrdl_final/code/NAFNet/experiments/NAFNet-SIDD-finetune-width64-8k-debug/models
+  training_states: /home/luluboy/projects/vrdl_final/code/NAFNet/experiments/NAFNet-SIDD-finetune-width64-8k-debug/training_states
+  log: /home/luluboy/projects/vrdl_final/code/NAFNet/experiments/NAFNet-SIDD-finetune-width64-8k-debug
+  visualization: /home/luluboy/projects/vrdl_final/code/NAFNet/experiments/NAFNet-SIDD-finetune-width64-8k-debug/visualization
+
+train:
+  optim_g:
+    type: AdamW
+    lr: !!float 5e-05
+    weight_decay: 0.0
+    betas: [0.9, 0.999]
+  scheduler:
+    type: TrueCosineAnnealingLR
+    T_max: 20000
+    eta_min: !!float 1e-06
+  total_iter: 20000
+  warmup_iter: 500
+  pixel_opt:
+    type: PSNRLoss
+    loss_weight: 1.0
+    reduction: mean
+  use_amp: True
+
+val:
+  val_freq: 0
+  save_img: False
+  use_image: False
+  metrics:
+    psnr:
+      type: calculate_psnr
+      crop_border: 0
+      test_y_channel: false
+
+logger:
+  print_freq: 10
+  save_checkpoint_freq: 2000
+  use_tb_logger: False
+  wandb:
+    project: null
+    resume_id: null
+
+dist_params:
+  backend: nccl
+  port: 29500
+
+evaluation:
+  freq: 0
+  save_path: ./results/finetune_val
+
+is_train: True
+dist: False
+rank: 0
+world_size: 1
