@@ -39,6 +39,11 @@ Thumbs.db
 .vscode/
 .idea/
 
+# Cloned model repos
+CGNet_repo/
+swinir_repo/
+code/CGNet_repo
+
 # Large files - not needed in repo
 swinir_model/swinir_dn.pth
 submissions/ensemble_results/ensemble_alpha_*.csv

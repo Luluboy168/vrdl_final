@@ -297,4 +297,4 @@ vrdl_final/
 
 ## Appendix C: GitHub Repository
 
-*(To be added by Luluboy)*
+**URL**: [https://github.com/Luluboy168/vrdl_final](https://github.com/Luluboy168/vrdl_final)
