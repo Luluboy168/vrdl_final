@@ -83,4 +83,5 @@
 ---
 
 ## 準備提醒
-- [ ] Report 截止 06/07 23:59 — 需 Luluboy 建立 GitHub repo（vrdl_final）後補上連結至 Appendix C
+- [x] Report 截止 06/07 23:59 — ✅ GitHub repo 已存在（https://github.com/Luluboy168/vrdl_final），Appendix C 連結已填
+- [ ] 截止前確認 Report、Slides、Script 三份文件格式無誤
