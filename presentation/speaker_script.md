@@ -24,7 +24,7 @@
 ## Slide 4: Kaggle Submission Results (45s)
 「這張表格列出所有 Kaggle 驗證過的分數——注意這裡每一個數字都是實際 Late Submission 的結果，不是估測值。
 最佳結果是 **40.4852 dB**，使用 NAFNet-TTA 與 Restormer-FT-TTA8 的加權融合，α=0.745，比金牌門檻高出將近 0.48 dB。
-值得注意的是，Restormer 的 fine-tuning 幾乎無效——5 個 epochs 的 fine-tuned 版本（40.0899）幾乎等於未 fine-tune 的版本（40.0902）。另一個獨立的 Restormer fine-tuning 實驗（Restormer-FT-E5）在 5 個 epochs 後分數崩潰到 28.22——灾难性的失敗，原因懷疑是學習率或資料問題。」
+值得注意的是，Restormer 的 fine-tuning 有小幅幫助——Restormer-FT-TTA8（40.1344）比 Restormer（40.0902）高約 0.04 dB。但相較於 NAFNet-TTA（40.41），Restormer 仍明顯較弱（40.09 vs 40.37）。另一個獨立的 Restormer fine-tuning 實驗（Restormer-FT-E5）在 5 個 epochs 後分數崩潰到 28.22——灾难性的失敗，原因懷疑是學習率或資料問題。」
 
 ---
 
@@ -33,7 +33,7 @@
 第一，NAFNet 在這個 benchmark 單獨使用就比 Restormer 強（40.37 vs 40.09）。
 第二，TTA 在 NAFNet 上有 bug，會讓分數變差，千萬不能把兩個 TTA variant 放在一起 ensemble——那會讓分數直接掉到 39.82。
 第三，3 模型的 ensemble 反而沒有 2 模型好，因為模型之間太過相關。
-第四，fine-tuning 在這個任務上效果有限——5 個 epochs 的 Restormer fine-tune（40.09）幾乎無提升，另一個實驗甚至崩潰到 28.22（Restormer-FT-E5）。」
+第四，fine-tuning 效果有限且有風險——Restormer-FT-TTA8（40.13）比 Restormer（40.09）有小幅提升，但另一個 Restormer fine-tuning 實驗（Restormer-FT-E5）因學習率或資料問題在 5 epochs 後崩潰到 28.22，說明 fine-tuning 在此任務上並不穩定。」
 
 ---
 
