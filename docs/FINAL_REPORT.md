@@ -2,7 +2,7 @@
 
 **Course:** VRDL (Visual Recognition and Deep Learning) Final Project  
 **Team:** Luluboy (solo, 100% contribution)  
-**Date:** May 24, 2026  
+**Date:** May 25, 2026  
 **GitHub:** https://github.com/Luluboy168/vrdl_final  
 **Hardware:** NVIDIA RTX 3080 Ti (12 GB)
 
